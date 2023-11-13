@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Search"
         mc:Ignorable="d"
-        Title="wndSearch" Height="450" Width="800">
-    <Grid>
-        
+        Title="wndSearch" Height="603" Width="533">
+    <Grid Margin="0,0,0,-6">
+        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" Margin="35,88,26,214"/>
+        <ComboBox HorizontalAlignment="Left" Margin="35,433,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox HorizontalAlignment="Left" Margin="211,433,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox HorizontalAlignment="Left" Margin="387,433,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="DeleteButton" Content="Delete" HorizontalAlignment="Left" Margin="126,505,0,0" VerticalAlignment="Top" Height="30" Width="115"/>
+        <Button x:Name="SelectButton" Content="Select" HorizontalAlignment="Left" Margin="303,505,0,0" VerticalAlignment="Top" Height="30" Width="115"/>
+
     </Grid>
 </Window>
