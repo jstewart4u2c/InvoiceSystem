@@ -23,5 +23,13 @@ namespace InvoiceSystem.Items
         {
             InitializeComponent();
         }
+
+        public class Item
+        {
+            //Private Variables
+            private int code;
+            private double cost;
+            private string description;
+        }
     }
 }

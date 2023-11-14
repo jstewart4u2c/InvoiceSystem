@@ -5,8 +5,73 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Items"
         mc:Ignorable="d"
-        Title="wndItems" Height="450" Width="800">
+        Title="wndItems" Height="600" Width="530">
+
+    <Window.Resources>
+        <Style x:Key="HeaderLabel">
+            <Setter Property="Label.FontFamily" Value="Sitka Heading" />
+            <Setter Property="Label.FontSize" Value="20" />
+        </Style>
+
+        <Style x:Key="WindowLabels">
+            <Setter Property="Label.FontFamily" Value="Sitka Display" />
+            <Setter Property="Label.FontSize" Value="14" />
+        </Style>
+
+        <Style x:Key="ButtonStyle">
+            <Setter Property="Button.FontFamily" Value="Sitka Display" />
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="15*" />
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <Label Name="lblItemHeader" Content="Items" Style="{StaticResource HeaderLabel}"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,23,0,0"/>
+
+        <!--Data Grid-->
+        <DataGrid Grid.Row="1" Name="itemGrid" Margin="20"/>
+
+        <!--Text Box Grid-->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="40*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Name="DescTextBox" Grid.Column="0" Margin="32,45,32,15" />
+            <TextBox Name="CostTextBox" Grid.Column="1" Margin="45,45,45,15"/>
+            <Label Content="Description" Grid.Column="0" HorizontalAlignment="Center" Margin="0,18,0,0"
+                   VerticalAlignment="Top" Style="{StaticResource WindowLabels}"/>
+            <Label Grid.Column="1" Content="Cost" HorizontalAlignment="Center" Margin="0,18,0,0" 
+                   VerticalAlignment="Top" Style="{StaticResource WindowLabels}"/>
+
+        </Grid>
+
+        <!--Button Grid-->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="10*" />
+            </Grid.ColumnDefinitions>
+            
+            <Button x:Name="addItemButton" Content="Add Item" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" 
+                Width="75" Grid.Column="1"/>
+            <Button x:Name="editItemButton" Content="Edit Item" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Height="25" Width="74" Grid.Column="2"/>
+            <Button x:Name="deleteItemButton" Content="Delete Item" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                Height="25" Width="74" Grid.Column="3"/>
+        </Grid>
+
+
     </Grid>
 </Window>
