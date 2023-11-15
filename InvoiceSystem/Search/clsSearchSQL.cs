@@ -127,7 +127,7 @@ using System.Reflection;
                 int iNumRows;
 
                 using (OleDbConnection conn = new OleDbConnection(sConnectionString))
-                {
+{
                     //Open the connection to the database
                     conn.Open();
 
@@ -143,8 +143,8 @@ using System.Reflection;
                 return iNumRows;
 			}
 			catch (Exception ex)
-			{
+    {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
 			}
-		}
+    }
 }
