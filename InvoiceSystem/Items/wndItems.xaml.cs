@@ -55,14 +55,12 @@ namespace InvoiceSystem.Items
                 //Execute SQL to select all from db
                 ds = db.ExecuteSQLStatement("SELECT * FROM ItemDesc", ref ReturnValues);
 
-                ds.Tables[0].TableName = "ItemDesc";
-
                 //loop to grab all data and output to itemList
                 for(int i=0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     itemList.Items.Add(ds.Tables[0].Rows[i][1].ToString() + " " + ds.Tables[0].Rows[i].ItemArray[2].ToString());
                 }
-                
+
             }
             catch (Exception ex)
             {
