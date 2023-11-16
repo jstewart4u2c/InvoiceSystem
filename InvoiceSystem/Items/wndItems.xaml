@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Items"
         mc:Ignorable="d"
-        Title="wndItems" Height="600" Width="530">
+        Title="Items" Height="600" Width="530">
 
     <Window.Resources>
         <Style x:Key="HeaderLabel">
@@ -25,18 +25,25 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="60*" />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="55*" />
             <RowDefinition Height="15*" />
             <RowDefinition Height="15*" />
         </Grid.RowDefinitions>
 
+        <Menu Height="30" VerticalAlignment="Top">
+            <MenuItem x:Name="MainMenu" Header="_Main Menu" Click="MainMenu_Click"/>
+            <MenuItem x:Name="SearchMenuItem" Header="_Search Item List" Click="SearchMenu_Click"/>
+        </Menu>
+
         <!--Header-->
         <Label Name="lblItemHeader" Content="Items" Style="{StaticResource HeaderLabel}"
-               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,23,0,0"/>
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,43,0,0"/>
 
         <!--Data Grid-->
-        <DataGrid Grid.Row="1" Name="itemGrid" Margin="20"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="20">
+            <ListBox Name="itemList" HorizontalAlignment="Left" Height="1" Margin="20" VerticalAlignment="Top" Width="4"/>
+        </Border>
 
         <!--Text Box Grid-->
         <Grid Grid.Row="2">
@@ -71,6 +78,7 @@
             <Button x:Name="deleteItemButton" Content="Delete Item" HorizontalAlignment="Center" VerticalAlignment="Center" 
                 Height="25" Width="74" Grid.Column="3"/>
         </Grid>
+        
 
 
     </Grid>
