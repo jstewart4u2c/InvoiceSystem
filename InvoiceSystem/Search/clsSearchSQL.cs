@@ -15,7 +15,7 @@ using System.Reflection;
         private string sConnectionString;
 
         /// <summary>
-        /// Constructor that sets the connection string to the database
+        /// Constructor that sets the connection string to the database 
         /// </summary>
 		public clsSearchSQL()
 		{
