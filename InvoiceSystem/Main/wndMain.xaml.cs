@@ -2,6 +2,7 @@
 using InvoiceSystem.Search;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -23,6 +24,7 @@ namespace InvoiceSystem.Main
     public partial class wndMain : Window
     {
         public bool MenuEnabled = false;
+        clsMainSQL db = new clsMainSQL();
         public wndMain()
         {
             InitializeComponent();
@@ -32,11 +34,13 @@ namespace InvoiceSystem.Main
         private async void NavToSearchWnd(object sender, RoutedEventArgs e)
         {
            /*Check if User is Creating or Editing*/
-           if(!MenuEnabled) { 
-           /*Close Main Window*/
+           if(!MenuEnabled) {
+                /*Close Main Window*/
+           this.Hide();
            wndSearch search = new wndSearch();
-           search.Show();
-           Visibility = Visibility.Hidden;
+           search.ShowDialog();
+           this.Show();
+
                 /*When Search Window is Closed Gather Current ID Selected*/
             }//End IF
             else
@@ -53,10 +57,11 @@ namespace InvoiceSystem.Main
         {
             /*Check if User is Creating or Editing*/
             /*Close Main Window*/
-            if (!MenuEnabled) { 
-            wndItems items = new wndItems();
-            items.Show();
-            Visibility = Visibility.Hidden;
+            if (!MenuEnabled) {
+                this.Hide();
+                wndItems items = new wndItems();
+                items.ShowDialog();
+                this.Show();
             /*When Item Window is Closed, Update Tables*/
             }
             else
@@ -69,17 +74,26 @@ namespace InvoiceSystem.Main
             }//End Else
         }//End Nav Item Button
 
-        private void EnableMenuClick(object sender, RoutedEventArgs e)
+        private void CreateInvoiceClick(object sender, RoutedEventArgs e)
         {
             /*Enable All Items*/
-            CreateOrEditContentGrid.IsEnabled = true;
-            AddedItemsDataGrid.IsEnabled = true;
-            SaveInvoiceButton.IsEnabled = true;
-            DeleteItemButton.IsEnabled = true;
-            TotalCostTextBox.IsEnabled = true;
+            ChangeEnableStatus();
+            /*Show Cancel Button*/
             CancelInvoiceButton.Visibility = Visibility.Visible;
-            /*Set MenuEnabled so User cannot change windows*/
-            MenuEnabled = true;
+
+            /*Load DropDown Menu*/
+            DataSet ds;
+
+            int iRet = 0;
+
+            //Grab All Items
+            ds = db.ExecuteSQLStatement("SELECT * FROM ItemDesc", ref iRet);
+
+            //Loop and add them to Drop Down
+            for(int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                SelectItemDropBox.Items.Add(ds.Tables[0].Rows[i][1].ToString());
+            }
 
             /*When Clicked Again, Wipe Fields*/
 
@@ -88,12 +102,7 @@ namespace InvoiceSystem.Main
         private void SaveInvoiceClick(object sender, RoutedEventArgs e)
         {
             /*Disable Menu Until User Decides to Update*/
-            MenuEnabled = false;
-            CreateOrEditContentGrid.IsEnabled = false;
-            AddedItemsDataGrid.IsEnabled = false;
-            SaveInvoiceButton.IsEnabled = false;
-            DeleteItemButton.IsEnabled = false;
-            TotalCostTextBox.IsEnabled = false;
+            ChangeEnableStatus();
             /*Allow User to Press Update*/
             UpdateInvoiceButton.Visibility = Visibility.Visible;
             CancelInvoiceButton.Visibility = Visibility.Hidden;
@@ -102,11 +111,7 @@ namespace InvoiceSystem.Main
         private void UpdateInvoiceClick(object sender, RoutedEventArgs e)
         {
             /*Enable All Items*/
-            CreateOrEditContentGrid.IsEnabled = true;
-            AddedItemsDataGrid.IsEnabled = true;
-            SaveInvoiceButton.IsEnabled = true;
-            DeleteItemButton.IsEnabled = true;
-            TotalCostTextBox.IsEnabled = true;
+            ChangeEnableStatus();
             CancelInvoiceButton.Visibility = Visibility.Visible;
             
             /*Set MenuEnabled so User cannot change windows*/
@@ -115,15 +120,22 @@ namespace InvoiceSystem.Main
 
         private void CancelCurrentButton(object sender, RoutedEventArgs e)
         {
-            MenuEnabled = false;
-            CreateOrEditContentGrid.IsEnabled = false;
-            AddedItemsDataGrid.IsEnabled = false;
-            SaveInvoiceButton.IsEnabled = false;
-            DeleteItemButton.IsEnabled = false;
-            TotalCostTextBox.IsEnabled = false;
+            ChangeEnableStatus();
             //UpdateInvoiceButton.Visibility = Visibility.Visible;
             CancelInvoiceButton.Visibility = Visibility.Hidden;
 
         }
+
+        /*Returns The Opposite Bool Value so We can Enable and Disable Menu*/
+        public void ChangeEnableStatus()
+        {
+            MenuEnabled = !MenuEnabled;
+            CreateOrEditContentGrid.IsEnabled = !CreateOrEditContentGrid.IsEnabled;
+            AddedItemsDataGrid.IsEnabled = !AddedItemsDataGrid.IsEnabled;
+            SaveInvoiceButton.IsEnabled = !SaveInvoiceButton.IsEnabled;
+            DeleteItemButton.IsEnabled = !DeleteItemButton.IsEnabled;
+            TotalCostTextBox.IsEnabled = !TotalCostTextBox.IsEnabled;
+        }
+
     }
 }
