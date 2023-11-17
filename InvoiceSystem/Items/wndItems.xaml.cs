@@ -162,8 +162,6 @@ namespace InvoiceSystem.Items
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
-
         }
 
         /// <summary>

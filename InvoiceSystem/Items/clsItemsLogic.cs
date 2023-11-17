@@ -35,8 +35,6 @@ namespace InvoiceSystem.Items
                 //Initialize Database
                 db = new clsDataAccess();
 
-                
-
                 int ReturnValues = 0;
 
                 //Execute SQL to select all from db
@@ -116,9 +114,6 @@ namespace InvoiceSystem.Items
                 
                 ds.AcceptChanges();
 
-
-
-
             }
             catch (Exception ex)
             {
@@ -147,8 +142,6 @@ namespace InvoiceSystem.Items
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
         }
-
     }
 }
