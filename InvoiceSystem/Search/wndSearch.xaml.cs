@@ -30,7 +30,7 @@ namespace InvoiceSystem.Search
             clsSearchLogic SearchLogic = new clsSearchLogic();
             SearchInvoiceNumber.ItemsSource = SearchLogic.GetDistinctInvoiceNumbers();
             SearchInvoiceDate.ItemsSource = SearchLogic.GetDistinctInvoiceDates();
-            SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCost();
+            SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCosts();
         }
 
         private void NavMainMenu_Click(object sender, RoutedEventArgs e)
