@@ -68,7 +68,7 @@ using System.Reflection;
     /// <returns> string SQL </returns>
     public static string FilterInvoiceNumber(int InvoiceNum)
     {
-        //****** Future work
+
         try
         {
             string sSQL = "SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString();
@@ -83,10 +83,10 @@ using System.Reflection;
     /// <summary>
     /// Get Invoice based on InvoiceDate
     /// </summary>
-    /// <returns> list of string for combobox</returns>
+    /// <returns> string SQL/returns>
     public static string FilterInvoiceDate(string InvoiceDate)
     {
-        //****** Future work
+
         try
         {
             string sSQL = ("SELECT* FROM Invoices WHERE InvoiceDate = #" + InvoiceDate + "#");
@@ -100,10 +100,9 @@ using System.Reflection;
     /// <summary>
     /// Get Invoice based on InvoiceCost
     /// </summary>
-    /// <returns> list of string for combobox</returns>
+    /// <returns> string SQL</returns>
     public static string FilterInvoiceCost(float InvoiceCost)
     {
-        //****** Future work
         try
         {
             string sSQL = ("SELECT* FROM Invoices WHERE TotalCost = " + InvoiceCost.ToString());
@@ -120,10 +119,10 @@ using System.Reflection;
     /// </summary>
     /// <param name="InvoiceNum">invoice num </param>
     /// <param name="InvoiceDate">date of invoice</param>
-    /// <returns> list of string for combobox</returns>
+    /// <returns> string SQL</returns>
     public static string FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate)
     {
-        //****** Future work
+
         try
         {
             string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#");
@@ -140,10 +139,10 @@ using System.Reflection;
     /// </summary>
     /// <param name="InvoiceCost">invoice cost of product</param>
     /// <param name="InvoiceDate">date of invoice</param>
-    /// <returns> list of string for combobox</returns>
+    /// <returns> string SQL</returns>
     public static string FilterInvoiceCostDate(float InvoiceCost, string InvoiceDate)
     {
-        //****** Future work
+
         try
         {
             string sSQL = ("SELECT* FROM Invoices WHERE TotalCost = " + InvoiceCost.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#");
@@ -160,10 +159,10 @@ using System.Reflection;
     /// </summary>
     /// <param name="InvoiceNum">invoice num </param>
     /// <param name="InvoiceCost">Cost of invoice</param>
-    /// <returns> list of string for combobox</returns>
+    /// <returns>string SQL</returns>
     public static string FilterInvoiceNumbersCost(int InvoiceNum, float InvoiceCost)
     {
-        //****** Future work
+
         try
         {
             string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + TotalCost = " + InvoiceCost.ToString());
@@ -181,10 +180,10 @@ using System.Reflection;
     /// <param name="InvoiceNum">invoice num </param>
     /// <param name="InvoiceDate">date of invoice</param>
     /// <param name="InvoiceCost">Cost of invoice</param>
-    /// <returns> list of string for combobox</returns>
+    /// <returns> string SQL</returns>
     public static string FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate, float InvoiceCost)
     {
-        //****** Future work
+
         try
         {
             string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#" + " AND + TotalCost = " + InvoiceCost.ToString());

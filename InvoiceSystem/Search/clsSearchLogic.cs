@@ -104,6 +104,7 @@ namespace InvoiceSystem.Search
         /// <summary>
         /// Get Invoice based on InvoiceNumbers
         /// </summary>
+        /// <param name="InvoiceNum">invoice num </param>
         /// <returns> list of string for combobox</returns>
         public List<clsInvoices> FilterInvoiceNumbers(int InvoiceNum)
         {
@@ -122,6 +123,7 @@ namespace InvoiceSystem.Search
         /// <summary>
         /// Get Invoice based on InvoiceDate
         /// </summary>
+        /// <param name="InvoiceDate">date of invoice</param>
         /// <returns> list of string for combobox</returns>
         public List<clsInvoices> FilterInvoiceDates(string InvoiceDate)
         {
@@ -139,7 +141,8 @@ namespace InvoiceSystem.Search
         /// <summary>
         /// Get Invoice based on InvoiceCost
         /// </summary>
-        /// <returns> list of string for combobox</returns>
+        /// <param name="InvoiceCost">Cost of invoice</param>
+        /// <returns> list of string for gid</returns>
         public List<clsInvoices> FilterInvoiceCosts(float InvoiceCost)
         {
             //****** Future work
@@ -159,7 +162,7 @@ namespace InvoiceSystem.Search
         /// </summary>
         /// <param name="InvoiceNum">invoice num </param>
         /// <param name="InvoiceDate">date of invoice</param>
-        /// <returns> list of string for combobox</returns>
+        /// <returns> list of string for grid</returns>
         public List<clsInvoices> FilterInvoiceNumbersDates(int InvoiceNum, string InvoiceDate)
         {
             //****** Future work
@@ -179,7 +182,7 @@ namespace InvoiceSystem.Search
         /// </summary>
         /// <param name="InvoiceCost">invoice cost of product</param>
         /// <param name="InvoiceDate">date of invoice</param>
-        /// <returns> list of string for combobox</returns>
+        /// <returns> list of string for grid</returns>
         public List<clsInvoices> FilterInvoiceCostDates(float InvoiceCost, string InvoiceDate)
         {
             //****** Future work
@@ -199,7 +202,7 @@ namespace InvoiceSystem.Search
         /// </summary>
         /// <param name="InvoiceNum">invoice num </param>
         /// <param name="InvoiceCost">Cost of invoice</param>
-        /// <returns> list of string for combobox</returns>
+        /// <returns> list of string for grid</returns>
         public List<clsInvoices> FilterInvoiceNumbersCosts(int InvoiceNum, float InvoiceCost)
         {
             //****** Future work
@@ -220,7 +223,7 @@ namespace InvoiceSystem.Search
         /// <param name="InvoiceNum">invoice num </param>
         /// <param name="InvoiceDate">date of invoice</param>
         /// <param name="InvoiceCost">Cost of invoice</param>
-        /// <returns> list of string for combobox</returns>
+        /// <returns> list of string for grid</returns>
         public List<clsInvoices> FilterInvoiceNumbersDates(int InvoiceNum, string InvoiceDate, float InvoiceCost)
         {
             //****** Future work
