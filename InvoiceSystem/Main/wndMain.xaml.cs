@@ -26,8 +26,9 @@ namespace InvoiceSystem.Main
     public partial class wndMain : Window
     {
         public bool MenuEnabled = false;
-        clsMainSQL db = new clsMainSQL();
+        clsMainSQL sqlQuery = new clsMainSQL();
         clsMainLogic logic = new clsMainLogic();
+        clsDataAccess db = new clsDataAccess();
         DataSet ds;
         bool IsDeleting = false;
         int ItemCount;
@@ -212,7 +213,7 @@ namespace InvoiceSystem.Main
                 string PriceQuery;
                 string CurrentPrice;
                 //Put in SQL FILE
-                PriceQuery = db.GrabItemPrice(SelectItemDropBox.Text);
+                PriceQuery = sqlQuery.GrabItemPrice(SelectItemDropBox.Text);
                 CurrentPrice = db.ExecuteScalarSQL(PriceQuery);
                 CostTextBox.Text = "$" + CurrentPrice;
             }

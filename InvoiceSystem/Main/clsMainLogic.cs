@@ -12,27 +12,25 @@ namespace InvoiceSystem.Main
     internal class clsMainLogic
     {
         
-        clsMainSQL db = new clsMainSQL();
+        clsMainSQL sqlQuery = new clsMainSQL();
+        clsDataAccess db = new clsDataAccess();
         DataSet ds;
         public int AddInvoice()
         {
             try { 
                 /*Values, TotalPrice will be added At another time*/
                 /*NEEDS TO BE CLEANED UP, PLEASE IGNORE*/
-                int iRef = 0;
                 int InvoiceNumber;
-                var TodaysDate = DateOnly.FromDateTime(DateTime.Now);
-                double totalPrice = 0;
-                
-                string ConvertDate = TodaysDate.ToString();
                 /*Insert Date and Blank Cost*/
-                //string InsertStatement = db.InsertIntoInvoice();
-                //db.ExecuteNonQuery(InsertStatement);
+                string InsertStatement = sqlQuery.InsertIntoInvoice();
+                db.ExecuteNonQuery(InsertStatement);
                 
                 /*Make Method that if User Presses Cancel, Lastest Invoice Will be Deleted*/
-                string GrabInvoiceNumber = db.GrabLastestInvoiceID();
+                string GrabInvoiceNumber = sqlQuery.GrabLastestInvoiceID();
                 InvoiceNumber = Convert.ToInt32(db.ExecuteScalarSQL(GrabInvoiceNumber));
-          
+                /*TestDelete so it doesnt save until i got everything working*/
+                string DeleteTest = sqlQuery.DeleteTest(InvoiceNumber);
+                db.ExecuteNonQuery(DeleteTest);
                 
                 return InvoiceNumber;
             }
@@ -47,7 +45,6 @@ namespace InvoiceSystem.Main
         {
             try { 
            int iRef = 0;
-           db = new clsMainSQL();
 
             ds = db.ExecuteSQLStatement("SELECT * FROM LineItems", ref iRef);
 
@@ -58,7 +55,7 @@ namespace InvoiceSystem.Main
             string ItemCodeQuery;
             string ItemCode;
 
-            ItemCodeQuery = db.GrabbingItemCode(ItemDesc);
+            ItemCodeQuery = sqlQuery.GrabbingItemCode(ItemDesc);
             ItemCode = db.ExecuteScalarSQL(ItemCodeQuery);
             DR[2] = ItemCode;
 
