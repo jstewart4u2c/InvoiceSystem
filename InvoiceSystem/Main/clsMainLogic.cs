@@ -11,38 +11,29 @@ namespace InvoiceSystem.Main
 {
     internal class clsMainLogic
     {
-        /*
-         * Figure out total Price 
-         * 
-         */
-        clsMainSQL db;
+        
+        clsMainSQL db = new clsMainSQL();
         DataSet ds;
-
-
         public int AddInvoice()
         {
             try { 
                 /*Values, TotalPrice will be added At another time*/
+                /*NEEDS TO BE CLEANED UP, PLEASE IGNORE*/
                 int iRef = 0;
                 int InvoiceNumber;
                 var TodaysDate = DateOnly.FromDateTime(DateTime.Now);
                 double totalPrice = 0;
-
-                db = new clsMainSQL();
-                //Grab Data
-                ds = db.ExecuteSQLStatement("SELECT * FROM Invoices", ref iRef);
-
-                DataRow DR = ds.Tables[0].NewRow();
-                DataRow Lastrow = ds.Tables[0].Rows[ds.Tables[0].Rows.Count - 1];
-
-                int ConvertLastRow = Convert.ToInt32(Lastrow[0]);
-
-                DR[0] = ConvertLastRow++;
-                InvoiceNumber = ConvertLastRow;
-
-                DR[1] = TodaysDate.ToString();
-                DR[2] = totalPrice;
-                /**TODO SAVE CHANGES*/
+                
+                string ConvertDate = TodaysDate.ToString();
+                /*Insert Date and Blank Cost*/
+                //string InsertStatement = db.InsertIntoInvoice();
+                //db.ExecuteNonQuery(InsertStatement);
+                
+                /*Make Method that if User Presses Cancel, Lastest Invoice Will be Deleted*/
+                string GrabInvoiceNumber = db.GrabLastestInvoiceID();
+                InvoiceNumber = Convert.ToInt32(db.ExecuteScalarSQL(GrabInvoiceNumber));
+          
+                
                 return InvoiceNumber;
             }
             catch (Exception ex)
@@ -54,12 +45,7 @@ namespace InvoiceSystem.Main
 
         public void AddToLineItemsTable(string ItemDesc, string InvoiceNumber, int ItemCount)
         {
-           /*
-            * Fill In LineItems 
-            * Invoice Number, Grab From Main 
-            * LineItemNumber, Item Count
-            * ItemCode, Query, Match with ItemDesc
-            */
+            try { 
            int iRef = 0;
            db = new clsMainSQL();
 
@@ -70,8 +56,18 @@ namespace InvoiceSystem.Main
             DR[1] = ItemCount;
 
             string ItemCodeQuery;
-            ItemCodeQuery = "SELECT ItemCode FROM ItemDesc WHERE ItemDesc = \"" + ItemDesc + "\"";
+            string ItemCode;
 
+            ItemCodeQuery = db.GrabbingItemCode(ItemDesc);
+            ItemCode = db.ExecuteScalarSQL(ItemCodeQuery);
+            DR[2] = ItemCode;
+
+            /*Display On DataGrid*/
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         public int TotalPrice()
@@ -82,5 +78,10 @@ namespace InvoiceSystem.Main
             //Add Total Price to Invoice Table where Invoice = InvoiceNumber
             return 0;
         }
+
+        /*Method for Search to Call
+         *Invoice Number will be Sent over to main and reopen Main Window
+         *This will then Grab all sql information needed and prompt Main to Display
+         */
     }
 }

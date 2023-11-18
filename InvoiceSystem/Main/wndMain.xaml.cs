@@ -74,7 +74,6 @@ namespace InvoiceSystem.Main
                     wndItems items = new wndItems();
                     items.ShowDialog();
                     this.Show();
-                /*When Item Window is Closed, Update Tables*/
                 }
                 else
                 {
@@ -172,13 +171,14 @@ namespace InvoiceSystem.Main
             }
         }
 
-        
-
         private void CancelCurrentButton(object sender, RoutedEventArgs e)
         {
             try { 
                 ChangeEnableStatus();
                 CancelInvoiceButton.Visibility = Visibility.Hidden;
+
+                /*If new Invoice is being made and canceled, Delete Invoice*/ 
+                /*If Update is canceled, just dont save changes*/
             }catch(Exception ex)
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
@@ -210,8 +210,8 @@ namespace InvoiceSystem.Main
                 /*Select Price Where ItemDesc = DropBox*/
                 string PriceQuery;
                 string CurrentPrice;
-                PriceQuery = "SELECT Cost FROM ItemDesc WHERE ItemDesc = \"" + SelectItemDropBox.Text + "\"";
-
+                //Put in SQL FILE
+                PriceQuery = db.GrabItemPrice(SelectItemDropBox.Text);
                 CurrentPrice = db.ExecuteScalarSQL(PriceQuery);
                 CostTextBox.Text = "$" + CurrentPrice;
             }
@@ -219,7 +219,6 @@ namespace InvoiceSystem.Main
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
         }
 
         private void AddItem(object sender, RoutedEventArgs e)
@@ -236,30 +235,28 @@ namespace InvoiceSystem.Main
                 string InvoiceNumber = InvoiceNumberLabel.Content.ToString();
 
                 logic.AddToLineItemsTable(ItemDesc, InvoiceNumber, ItemCount);
+
+
+                //Put ItemDesc and ItemPrice into DataGrid (Might be able to do it by loading the database and joining tables 
+                //SELECT ItemDesc.ItemDesc, ItemDesc.ItemPrice from ItemDesc,
+                //inner join LineItems on LineItems.ItemCode = ItemDesc.ItemCode
+                //Where LineItems.InvoiceNumber = InvoiceNumber
+
+
+                //Add Up Total Cost ** DONT SAVE UNTIL USER PRESSES SAVE
                 
             }
             catch (Exception ex)
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-
         }
 
-        /*TODO
-         * When Add Item is Clicked, Add to DataGrid
-         * 
-         * When Item is Added Check
-         * string CurrentItem = SelectItemDropBox.Text;
-                if (CurrentItem == null)
-                {
-                    ErrorTextBox.Visibility = Visibility.Visible;
-                    ErrorTextBox.Text = "Please Select A Item";
-                }
-                else
-                {
-
-                }
-         */
+        /*TODO 
+        *Allow User To Delete A Item  
+        *Overall Save Button(Save all database changes)
+        *Display Search
+        */
 
     }
 }
