@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace InvoiceSystem.Common
 {
+    /// <summary>
+    /// gets/sets invoice objects
+    /// </summary>
+    /// <returns> string of object</returns>
     internal class clsInvoices
     {
         public string sInvoiceNum { get; set; }

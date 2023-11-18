@@ -15,18 +15,24 @@ namespace InvoiceSystem.Search
 {
     internal class clsSearchLogic
     {
-        //Get DISTINCT InvoiceNumbers
+
+        /// <summary>
+        /// Gets Distinct InvoiceNumbers with statment
+        /// </summary>
+        /// <returns> list of string for combobox</returns>
         public List<clsInvoices> lstInvoice;
         public List<string> GetDistinctInvoiceNumbers()
         {
             try
             {
+                //access database
                 List<string> lstInvoiceNum = new List<string>();
-                clsSearchSQL db = new clsSearchSQL();
+                clsDataAccess db = new clsDataAccess();
                 DataSet ds = new DataSet();
                 int iRetVal = 0;
-
-                ds = db.ExecuteSQLStatement("SELECT DISTINCT(InvoiceNum) FROM Invoices ORDER BY InvoiceNum", ref iRetVal);
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.GetDistinctInvoiceNumber(), ref iRetVal);
+                //loop through each
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     lstInvoiceNum.Add(dr[0].ToString());
@@ -38,17 +44,23 @@ namespace InvoiceSystem.Search
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-        //Get DISTINCT InvoiceDate
-        public List<string> GetDistinctInvoiceDate()
+
+        /// <summary>
+        /// Gets Distinct InvoiceDate with sql statement
+        /// </summary>
+        /// <returns> list of string for combobox</returns>
+        public List<string> GetDistinctInvoiceDates()
         {
             try
             {
+                //access database
                 List<string> lstInvoiceDate = new List<string>();
-                clsSearchSQL db = new clsSearchSQL();
+                clsDataAccess db = new clsDataAccess();
                 DataSet ds = new DataSet();
                 int iRetVal = 0;
-
-                ds = db.ExecuteSQLStatement("SELECT DISTINCT(InvoiceDate) From Invoices order by InvoiceDate", ref iRetVal);
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.GetDistinctInvoiceDate(), ref iRetVal);
+                //loop through each
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     lstInvoiceDate.Add(dr[0].ToString());
@@ -60,17 +72,23 @@ namespace InvoiceSystem.Search
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-        //Get DISTINCT InvoiceCost
-        public List<string> GetDistinctInvoiceCost()
+
+        /// <summary>
+        /// Gets Distinct InvoiceCosts with sql statement
+        /// </summary>
+        /// <returns> list of string for combobox</returns>
+        public List<string> GetDistinctInvoiceCosts()
         {
             try
             {
+                //access database
                 List<string> lstInvoiceTotalCost = new List<string>();
-                clsSearchSQL db = new clsSearchSQL();
+                clsDataAccess db = new clsDataAccess();
                 DataSet ds = new DataSet();
                 int iRetVal = 0;
-
-                ds = db.ExecuteSQLStatement("SELECT DISTINCT(TotalCost) From Invoices order by TotalCost", ref iRetVal);
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.GetDistinctInvoiceCost(), ref iRetVal);
+                //loop through each
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
                     lstInvoiceTotalCost.Add(dr[0].ToString());
@@ -83,40 +101,17 @@ namespace InvoiceSystem.Search
             }
         }
 
-
-        //Get Invoice based on InvoiceNumbers
-        public static string FilterInvoiceNumbers(int InvoiceNum)
+        /// <summary>
+        /// Get Invoice based on InvoiceNumbers
+        /// </summary>
+        /// <returns> list of string for combobox</returns>
+        public List<clsInvoices> FilterInvoiceNumbers(int InvoiceNum)
         {
+            //****** Future work
             try
             {
-                string sSQL = "SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString();
-                return sSQL;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-        //Get Invoice based on InvoiceDate
-        public static string FilterInvoiceDate(string InvoiceDate)
-        {
-            try
-            {
-                string sSQL = ("SELECT* FROM Invoices WHERE InvoiceDate = #" + InvoiceDate + "#");
-                return sSQL;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
-        }
-        //Get Invoice based on InvoiceCost
-        public static string FilterInvoiceCost(float InvoiceCost)
-        {
-            try
-            {
-                string sSQL = ("SELECT* FROM Invoices WHERE TotalCost = " + InvoiceCost.ToString());
-                return sSQL;
+                //FilterInvoiceNumber(int InvoiceNum);
+                return lstInvoice;
             }
             catch (Exception ex)
             {
@@ -124,12 +119,54 @@ namespace InvoiceSystem.Search
             }
         }
 
-        public static string FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate)
+        /// <summary>
+        /// Get Invoice based on InvoiceDate
+        /// </summary>
+        /// <returns> list of string for combobox</returns>
+        public List<clsInvoices> FilterInvoiceDates(string InvoiceDate)
         {
+            //****** Future work
+            try
+            {
+                //FilterInvoiceDate(string InvoiceDate)
+                return lstInvoice;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+        /// <summary>
+        /// Get Invoice based on InvoiceCost
+        /// </summary>
+        /// <returns> list of string for combobox</returns>
+        public List<clsInvoices> FilterInvoiceCosts(float InvoiceCost)
+        {
+            //****** Future work
+            try
+            {
+                //FilterInvoiceCost(float InvoiceCost)
+                return lstInvoice;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get Invoice based on invoice num and date
+        /// </summary>
+        /// <param name="InvoiceNum">invoice num </param>
+        /// <param name="InvoiceDate">date of invoice</param>
+        /// <returns> list of string for combobox</returns>
+        public List<clsInvoices> FilterInvoiceNumbersDates(int InvoiceNum, string InvoiceDate)
+        {
+            //****** Future work
             try
             {
                 string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#");
-                return sSQL;
+                return lstInvoice;
             }
             catch (Exception ex)
             {
@@ -137,12 +174,19 @@ namespace InvoiceSystem.Search
             }
         }
 
-        public static string FilterInvoiceCostDate(float InvoiceCost, string InvoiceDate)
+        /// <summary>
+        /// Get Invoice based on invoice cost and date
+        /// </summary>
+        /// <param name="InvoiceCost">invoice cost of product</param>
+        /// <param name="InvoiceDate">date of invoice</param>
+        /// <returns> list of string for combobox</returns>
+        public List<clsInvoices> FilterInvoiceCostDates(float InvoiceCost, string InvoiceDate)
         {
+            //****** Future work
             try
             {
                 string sSQL = ("SELECT* FROM Invoices WHERE TotalCost = " + InvoiceCost.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#");
-                return sSQL;
+                return lstInvoice;
             }
             catch (Exception ex)
             {
@@ -150,12 +194,19 @@ namespace InvoiceSystem.Search
             }
         }
 
-        public static string FilterInvoiceNumbersCost(int InvoiceNum, float InvoiceCost)
+        /// <summary>
+        /// Get Invoice based on invoice Num and Costs
+        /// </summary>
+        /// <param name="InvoiceNum">invoice num </param>
+        /// <param name="InvoiceCost">Cost of invoice</param>
+        /// <returns> list of string for combobox</returns>
+        public List<clsInvoices> FilterInvoiceNumbersCosts(int InvoiceNum, float InvoiceCost)
         {
+            //****** Future work
             try
             {
                 string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + TotalCost = " + InvoiceCost.ToString());
-                return sSQL;
+                return lstInvoice;
             }
             catch (Exception ex)
             {
@@ -163,22 +214,26 @@ namespace InvoiceSystem.Search
             }
         }
 
-        public static string FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate, float InvoiceCost)
+        /// <summary>
+        /// Get Invoice based on invoice num and date and cost
+        /// </summary>
+        /// <param name="InvoiceNum">invoice num </param>
+        /// <param name="InvoiceDate">date of invoice</param>
+        /// <param name="InvoiceCost">Cost of invoice</param>
+        /// <returns> list of string for combobox</returns>
+        public List<clsInvoices> FilterInvoiceNumbersDates(int InvoiceNum, string InvoiceDate, float InvoiceCost)
         {
+            //****** Future work
             try
             {
                 string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#" + " AND + TotalCost = " + InvoiceCost.ToString());
-                return sSQL;
+                return lstInvoice;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-        // Get invoice ID 
-
-        //GetInvoices (InvoiceNumber, InvoiceDate, TotalCost) - returns List <clsInvoices>
 
     }
 }

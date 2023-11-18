@@ -29,7 +29,7 @@ namespace InvoiceSystem.Search
             InitializeComponent();
             clsSearchLogic SearchLogic = new clsSearchLogic();
             SearchInvoiceNumber.ItemsSource = SearchLogic.GetDistinctInvoiceNumbers();
-            SearchInvoiceDate.ItemsSource = SearchLogic.GetDistinctInvoiceDate();
+            SearchInvoiceDate.ItemsSource = SearchLogic.GetDistinctInvoiceDates();
             SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCost();
         }
 
