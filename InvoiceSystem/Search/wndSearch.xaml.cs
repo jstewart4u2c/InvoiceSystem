@@ -23,7 +23,9 @@ namespace InvoiceSystem.Search
     public partial class wndSearch : Window
     {
 
-
+        /// <summary>
+        /// Initialize window objects
+        /// </summary>
         public wndSearch()
         {
             InitializeComponent();
@@ -33,6 +35,9 @@ namespace InvoiceSystem.Search
             SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCosts();
         }
 
+        /// <summary>
+        /// Go to main Window
+        /// </summary>
         private void NavMainMenu_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -47,6 +52,9 @@ namespace InvoiceSystem.Search
             }
         }
 
+        /// <summary>
+        /// Go to update window
+        /// </summary>
         private void NavUpdateItem_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -61,23 +69,37 @@ namespace InvoiceSystem.Search
             }
         }
 
+        /// <summary>
+        /// find the invoice number in database and updates grid
+        /// </summary>
         private void SearchInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //call sql methods to update grid.
         }
 
+        /// <summary>
+        /// find the date in database and updates grid
+        /// </summary>
         private void SearchInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //call sql methods to update grid.
+
         }
 
+        /// <summary>
+        /// find the total cost in database and updates grid
+        /// </summary>
         private void SearchTotalCosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //call sql methods to update grid.
         }
 
+        /// <summary>
+        /// close then open main and send invoice ID
+        /// </summary>
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
+            //**** This will pass the selected Invoice ID to the main method.******
             this.Hide();
             Main.wndMain main = new Main.wndMain();
             main.ShowDialog();

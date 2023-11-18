@@ -111,7 +111,9 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
-                //FilterInvoiceNumber(int InvoiceNum);
+                //Access database 
+                //get sql FilterInvoiceNumber(int InvoiceNum);
+                //loop
                 return lstInvoice;
             }
             catch (Exception ex)
@@ -130,6 +132,9 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
+                //Access database 
+                //get sql FilterInvoiceDate(int InvoiceNum);
+                //loop
                 //FilterInvoiceDate(string InvoiceDate)
                 return lstInvoice;
             }
@@ -148,6 +153,9 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
+                //Access database 
+                //get sql FilterInvoiceCosts(int InvoiceNum);
+                //loop
                 //FilterInvoiceCost(float InvoiceCost)
                 return lstInvoice;
             }
@@ -168,7 +176,9 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
-                string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#");
+                //Access database 
+                //get sql FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate)
+                //loop
                 return lstInvoice;
             }
             catch (Exception ex)
@@ -188,7 +198,10 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
-                string sSQL = ("SELECT* FROM Invoices WHERE TotalCost = " + InvoiceCost.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#");
+                //Access database 
+                //get sql FilterInvoiceCostDate(float InvoiceCost, string InvoiceDate)
+                //loop
+
                 return lstInvoice;
             }
             catch (Exception ex)
@@ -208,7 +221,10 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
-                string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + TotalCost = " + InvoiceCost.ToString());
+                //Access database 
+                //get sql FilterInvoiceNumbersCost(int InvoiceNum, float InvoiceCost)
+                //loop
+                
                 return lstInvoice;
             }
             catch (Exception ex)
@@ -229,7 +245,10 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
-                string sSQL = ("SELECT* FROM Invoices WHERE InvoiceNum = " + InvoiceNum.ToString() + " AND + InvoiceDate = #" + InvoiceDate + "#" + " AND + TotalCost = " + InvoiceCost.ToString());
+                //Access database 
+                //get sql FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate, float InvoiceCost)
+                //loop
+                
                 return lstInvoice;
             }
             catch (Exception ex)
