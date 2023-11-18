@@ -8,8 +8,8 @@ namespace InvoiceSystem.Common
 {
     internal class clsLineItems
     {
-        public int iInvoiceNum { get; set; }
-        public int iLineItemNumber { get; set; }
-        public string iItemCode { get; set; }
+        public string sInvoiceNum { get; set; }
+        public string sLineItemNumber { get; set; }
+        public string sItemCode { get; set; }
     }
 }

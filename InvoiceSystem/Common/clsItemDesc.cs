@@ -10,6 +10,6 @@ namespace InvoiceSystem.Common
     {
         public string sItemCode { get; set; }
         public string sItemDesc { get; set; }
-        public double dCost { get; set; }
+        public string sCost { get; set; }
     }
 }

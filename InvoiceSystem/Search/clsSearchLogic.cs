@@ -9,31 +9,29 @@ using System.Reflection;
 using System.Data;
 using System.Xml.Linq;
 using InvoiceSystem.Common;
+using System.Globalization;
 
 namespace InvoiceSystem.Search
 {
     internal class clsSearchLogic
     {
         //Get DISTINCT InvoiceNumbers
-        public List<clsInvoices> lstInvoices;
-        public List<clsInvoices> GetDistinctInvoiceNumbers()
+        public List<clsInvoices> lstInvoice;
+        public List<string> GetDistinctInvoiceNumbers()
         {
             try
             {
+                List<string> lstInvoiceNum = new List<string>();
                 clsSearchSQL db = new clsSearchSQL();
                 DataSet ds = new DataSet();
                 int iRetVal = 0;
 
-                ds = db.ExecuteSQLStatement( "SELECT DISTINCT(InvoiceNum) FROM Invoices ORDER BY InvoiceNum", ref iRetVal);
+                ds = db.ExecuteSQLStatement("SELECT DISTINCT(InvoiceNum) FROM Invoices ORDER BY InvoiceNum", ref iRetVal);
                 foreach (DataRow dr in ds.Tables[0].Rows)
                 {
-                    clsInvoices invoices = new clsInvoices();
-                    invoices.iInvoiceNum = Convert.ToInt32(dr[0]);
-                    invoices.sInvoiceDate = dr[1].ToString();
-                    invoices.iTotalCost = Convert.ToDouble(dr[2]);
-                    lstInvoices.Add(invoices);
+                    lstInvoiceNum.Add(dr[0].ToString());
                 }
-                return lstInvoices;
+                return lstInvoiceNum;
             }
             catch (Exception ex)
             {
@@ -41,12 +39,21 @@ namespace InvoiceSystem.Search
             }
         }
         //Get DISTINCT InvoiceDate
-        public static string GetDistinctInvoiceDate()
+        public List<string> GetDistinctInvoiceDate()
         {
             try
             {
-                string sSQL = "SELECT DISTINCT(InvoiceDate) From Invoices order by InvoiceDate";
-                return sSQL;
+                List<string> lstInvoiceDate = new List<string>();
+                clsSearchSQL db = new clsSearchSQL();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+
+                ds = db.ExecuteSQLStatement("SELECT DISTINCT(InvoiceDate) From Invoices order by InvoiceDate", ref iRetVal);
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    lstInvoiceDate.Add(dr[0].ToString());
+                }
+                return lstInvoiceDate;
             }
             catch (Exception ex)
             {
@@ -54,12 +61,21 @@ namespace InvoiceSystem.Search
             }
         }
         //Get DISTINCT InvoiceCost
-        public static string GetDistinctInvoiceCost()
+        public List<string> GetDistinctInvoiceCost()
         {
             try
             {
-                string sSQL = "SELECT DISTINCT(TotalCost) From Invoices order by TotalCost";
-                return sSQL;
+                List<string> lstInvoiceTotalCost = new List<string>();
+                clsSearchSQL db = new clsSearchSQL();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+
+                ds = db.ExecuteSQLStatement("SELECT DISTINCT(TotalCost) From Invoices order by TotalCost", ref iRetVal);
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    lstInvoiceTotalCost.Add(dr[0].ToString());
+                }
+                return lstInvoiceTotalCost;
             }
             catch (Exception ex)
             {
@@ -160,7 +176,7 @@ namespace InvoiceSystem.Search
             }
         }
 
-
+        // Get invoice ID 
 
         //GetInvoices (InvoiceNumber, InvoiceDate, TotalCost) - returns List <clsInvoices>
 

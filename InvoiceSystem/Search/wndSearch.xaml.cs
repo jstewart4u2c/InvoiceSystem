@@ -29,6 +29,8 @@ namespace InvoiceSystem.Search
             InitializeComponent();
             clsSearchLogic SearchLogic = new clsSearchLogic();
             SearchInvoiceNumber.ItemsSource = SearchLogic.GetDistinctInvoiceNumbers();
+            SearchInvoiceDate.ItemsSource = SearchLogic.GetDistinctInvoiceDate();
+            SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCost();
         }
 
         private void NavMainMenu_Click(object sender, RoutedEventArgs e)
@@ -61,17 +63,24 @@ namespace InvoiceSystem.Search
 
         private void SearchInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            //call sql methods to update grid.
         }
 
         private void SearchInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            //call sql methods to update grid.
         }
 
         private void SearchTotalCosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //call sql methods to update grid.
+        }
 
+        private void SelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+            Main.wndMain main = new Main.wndMain();
+            main.ShowDialog();
         }
     }
 }

@@ -8,8 +8,15 @@ namespace InvoiceSystem.Common
 {
     internal class clsInvoices
     {
-        public int iInvoiceNum { get; set; }
+        public string sInvoiceNum { get; set; }
+
+
+
         public string sInvoiceDate { get; set; }
-        public double iTotalCost { get; set; }
+
+
+
+
+        public string iTotalCost { get; set; }
     }
 }
