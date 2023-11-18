@@ -34,6 +34,7 @@ namespace InvoiceSystem.Main
         public wndMain()
         {
             InitializeComponent();
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
         /*Navigate to Search Window*/

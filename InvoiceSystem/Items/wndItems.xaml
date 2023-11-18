@@ -42,22 +42,25 @@
 
         <!--Data Grid-->
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="20">
-            <ListBox Name="itemList" HorizontalAlignment="Left" Height="1" Margin="20" VerticalAlignment="Top" Width="4"/>
+            <DataGrid x:Name="itemDataGrid" AutoGenerateColumns="True" SelectionChanged="DataGrid_Select" IsReadOnly="True" />
+            <!-- <ListBox Name="itemList" HorizontalAlignment="Center" Width="490" Height="281" VerticalAlignment="Center"/> -->
         </Border>
 
         <!--Text Box Grid-->
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60*" />
-                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="50*" />
+                <ColumnDefinition Width="50*" />
             </Grid.ColumnDefinitions>
 
-            <TextBox Name="DescTextBox" Grid.Column="0" Margin="32,45,32,15" />
-            <TextBox Name="CostTextBox" Grid.Column="1" Margin="45,45,45,15"/>
-            <Label Content="Description" Grid.Column="0" HorizontalAlignment="Center" Margin="0,18,0,0"
+            <TextBox Name="descTextBox" Grid.Column="0" Margin="42,45,20,15" IsReadOnly="True" />
+            <TextBox Name="costTextBox" Grid.Column="1" Margin="20,45,139,15" IsReadOnly="True"/>
+            <Label Content="Description" Grid.Column="0" HorizontalAlignment="Left" Margin="107,17,0,0"
+                   VerticalAlignment="Top" Style="{StaticResource WindowLabels}" RenderTransformOrigin="0.645,0.607"/>
+            <Label Grid.Column="1" Content="Cost" HorizontalAlignment="Left" Margin="56,17,0,0" 
                    VerticalAlignment="Top" Style="{StaticResource WindowLabels}"/>
-            <Label Grid.Column="1" Content="Cost" HorizontalAlignment="Center" Margin="0,18,0,0" 
-                   VerticalAlignment="Top" Style="{StaticResource WindowLabels}"/>
+            <Button Name="saveButton" Height="25" Width="74" Content="Save" HorizontalAlignment="Left" Margin="160,46,0,0" VerticalAlignment="Top" Grid.Column="1" 
+                    IsEnabled="False" Click="saveButton_Click"/>
 
         </Grid>
 
@@ -70,15 +73,13 @@
                 <ColumnDefinition Width="25*" />
                 <ColumnDefinition Width="10*" />
             </Grid.ColumnDefinitions>
-            
-            <Button x:Name="addItemButton" Content="Add Item" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" 
-                Width="75" Grid.Column="1"/>
-            <Button x:Name="editItemButton" Content="Edit Item" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Height="25" Width="74" Grid.Column="2"/>
+
+            <Button x:Name="addItemButton" Content="Add Item" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" 
+                Width="75" Grid.Column="1" Click="addItemButton_Click"/>
             <Button x:Name="deleteItemButton" Content="Delete Item" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                Height="25" Width="74" Grid.Column="3"/>
+                Height="30" Width="74" Grid.Column="3" Click="deleteItemButton_Click"/>
         </Grid>
-        
+
 
 
     </Grid>
