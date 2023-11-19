@@ -42,7 +42,7 @@
 
         <!--Data Grid-->
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="20">
-            <DataGrid x:Name="itemDataGrid" AutoGenerateColumns="True" SelectionChanged="DataGrid_Select" IsReadOnly="True" />
+            <DataGrid x:Name="itemDataGrid" AutoGenerateColumns="True" SelectionChanged="DataGrid_Select" IsReadOnly="True" CanUserSortColumns="False"/>
             <!-- <ListBox Name="itemList" HorizontalAlignment="Center" Width="490" Height="281" VerticalAlignment="Center"/> -->
         </Border>
 

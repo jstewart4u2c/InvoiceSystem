@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InvoiceSystem.Common;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace InvoiceSystem.Items
         /// access to the database class
         /// </summary>
         private clsDataAccess db;
+
+        private clsItemsSQL itemSQL = new clsItemsSQL();
 
         /// <summary>
         /// variable for the dataset
@@ -38,7 +41,7 @@ namespace InvoiceSystem.Items
                 int ReturnValues = 0;
 
                 //Execute SQL to select all from db
-                ds = db.ExecuteSQLStatement("SELECT * FROM ItemDesc", ref ReturnValues);
+                ds = db.ExecuteSQLStatement(itemSQL.GetItems(), ref ReturnValues);
 
                 //if the data is not null, add all to dataGrid
                 if (ds != null)
@@ -97,8 +100,7 @@ namespace InvoiceSystem.Items
 
                     ds.Tables[0].Rows.Add(newRow);
 
-                    string insert = $"INSERT INTO ItemDesc (ItemCode, ItemDesc, Cost) VALUES ('{count}', '{newDesc}', '{newCost}')";
-                    db.ExecuteNonQuery(insert);
+                    db.ExecuteNonQuery(itemSQL.AddItem(count, newDesc, newCost));
                 }
                 //else, edit selected index row information
                 else 
@@ -108,8 +110,8 @@ namespace InvoiceSystem.Items
 
                     string itemCode = ds.Tables[0].Rows[dataGrid.SelectedIndex][0].ToString();
 
-                    string update = $"UPDATE ItemDesc SET ItemDesc = '{newDesc}', Cost = '{newCost}' WHERE ItemCode = '{itemCode}'";
-                    db.ExecuteNonQuery(update);
+                    
+                    db.ExecuteNonQuery(itemSQL.UpdateItem(count, newDesc, newCost));
                 }
                 
                 ds.AcceptChanges();
@@ -132,7 +134,7 @@ namespace InvoiceSystem.Items
             {
                 string toDelete = ds.Tables[0].Rows[index]["ItemCode"].ToString();
 
-                db.ExecuteNonQuery("DELETE FROM ItemDesc WHERE ItemCode = '" + toDelete + "'");
+                db.ExecuteNonQuery(itemSQL.DeleteItem(toDelete));
 
                 //Delete Local
                 ds.Tables[0].Rows[index].Delete();

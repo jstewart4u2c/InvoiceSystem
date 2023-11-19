@@ -29,15 +29,14 @@ namespace InvoiceSystem.Items
         /// </summary>
         public static bool itemListModified;
         #endregion
-
+     
         /// <summary>
-        /// Creates new database object 
+        /// Opens new logic class
         /// </summary>
-        clsDataAccess db;
         clsItemsLogic logic = new clsItemsLogic();
 
         /// <summary>
-        /// 
+        /// Initialize window items, fill datagrid, and disable the delete button by default
         /// </summary>
         /// <exception cref="Exception"></exception>
         public wndItems()
