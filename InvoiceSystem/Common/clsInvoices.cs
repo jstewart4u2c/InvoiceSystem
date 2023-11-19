@@ -13,14 +13,7 @@ namespace InvoiceSystem.Common
     internal class clsInvoices
     {
         public string sInvoiceNum { get; set; }
-
-
-
         public string sInvoiceDate { get; set; }
-
-
-
-
         public string iTotalCost { get; set; }
     }
 }
