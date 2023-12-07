@@ -70,12 +70,37 @@ public class clsItemsSQL
         }
     }
 
+    /// <summary>
+    /// SQL statement to delete an item
+    /// </summary>
+    /// <param name="toDelete"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public string DeleteItem(string toDelete)
     {
         try
         {
             string deleteItemSQL = "DELETE FROM ItemDesc WHERE ItemCode = '" + toDelete + "'";
             return deleteItemSQL;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// SQL to get all invoices for a selected item
+    /// </summary>
+    /// <param name="itemCode"></param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public string GetInvoicesForItem(string itemCode)
+    {
+        try
+        {
+            string getInvoicesSQL = "SELECT InvoiceNum FROM LineItems WHERE ItemCode = '" + itemCode + "'";
+            return getInvoicesSQL;
         }
         catch (Exception ex)
         {

@@ -156,6 +156,9 @@ namespace InvoiceSystem.Items
                 saveButton.IsEnabled = true;
                 deleteItemButton.IsEnabled = false;
                 addItemButton.IsEnabled = false;
+
+                //set static variable to true
+                itemListModified = true;
             }
             catch (Exception ex)
             {
@@ -172,18 +175,40 @@ namespace InvoiceSystem.Items
         {
             try
             {
+                //ensure a valid line item is selected
                 if(itemDataGrid.SelectedItem != null)
                 {
+                    //get index from selected item
                     int index = itemDataGrid.SelectedIndex;
 
-                    logic.DeleteItem(index);
+                    //create list for potential invoice conflicts
+                    List<int> invoices = new List<int>();
+                    invoices = logic.GetInvoices(index, invoices);
 
-                    descTextBox.Clear();
-                    costTextBox.Clear();
-                    deleteItemButton.IsEnabled = false;
-                    saveButton.IsEnabled = false;
+                    //if the invoices list after database retrieval has data, show associated invoice conflicts
+                    if(invoices != null && invoices.Count > 0)
+                    {
+                        string invoiceErrorMessage = "This item is on the following invoices:\n";
 
-                    itemListModified = true;
+                        foreach(var invoiceNum in invoices)
+                        {
+                            invoiceErrorMessage += $"{invoiceNum}\n";
+                        }
+
+                        MessageBox.Show(invoiceErrorMessage, "Associated Invoices", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    //otherwise, delete item as usual
+                    else
+                    {
+                        logic.DeleteItem(index);
+
+                        descTextBox.Clear();
+                        costTextBox.Clear();
+                        deleteItemButton.IsEnabled = false;
+                        saveButton.IsEnabled = false;
+
+                        itemListModified = true;
+                    }
                 }
             }
             catch (Exception ex)
@@ -211,6 +236,7 @@ namespace InvoiceSystem.Items
 
                 logic.AddEditData(newDesc, newCost, itemDataGrid);
 
+                //enable add item button (since it was disabled after pushing it once)
                 addItemButton.IsEnabled = true;
 
                 if(itemDataGrid.SelectedIndex == -1)

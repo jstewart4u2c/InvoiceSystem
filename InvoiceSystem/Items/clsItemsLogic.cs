@@ -132,13 +132,47 @@ namespace InvoiceSystem.Items
         {
             try
             {
+                //create string to use in deletion SQL statement
                 string toDelete = ds.Tables[0].Rows[index]["ItemCode"].ToString();
-
                 db.ExecuteNonQuery(itemSQL.DeleteItem(toDelete));
 
                 //Delete Local
                 ds.Tables[0].Rows[index].Delete();
                 ds.AcceptChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        public List<int> GetInvoices(int index, List<int> invoices)
+        {
+            try
+            {
+                //create a string item code to use in SQL statement
+                string itemCode = ds.Tables[0].Rows[index]["ItemCode"].ToString();
+                int invoiceID;
+
+                if(itemCode != null)
+                {
+                    int retVal = 0;
+
+                    //create new dataset with the invoices from itemCode
+                    DataSet ds1 = db.ExecuteSQLStatement(itemSQL.GetInvoicesForItem(itemCode), ref retVal);
+                    
+                    //for each row, add 
+                    foreach(DataRow row in ds1.Tables[0].Rows)
+                    {
+                        //parse invoiceNum into an int, add to invoice list
+                        if(int.TryParse(row["InvoiceNum"].ToString(), out invoiceID))
+                        {
+                            invoices.Add(invoiceID);
+                        }
+                    }   
+                }
+
+                return invoices;
             }
             catch (Exception ex)
             {
