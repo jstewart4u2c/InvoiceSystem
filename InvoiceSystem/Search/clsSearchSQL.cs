@@ -10,7 +10,22 @@ using System.Reflection;
     /// </summary>
 	public class clsSearchSQL
 	{
-
+    /// <summary>
+    /// Gets Distinct InvoiceNmm with sql statement
+    /// </summary>
+    /// <returns>  string SQL </returns>
+    public static string GetInvoice()
+    {
+        try
+        {
+            string SQL = "SELECT DISTINCT(InvoiceNum) FROM Invoices ORDER BY InvoiceNum";
+            return SQL;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+        }
+    }
     /// <summary>
     /// Gets Distinct InvoiceNmm with sql statement
     /// </summary>
@@ -66,7 +81,7 @@ using System.Reflection;
     /// Get Invoice based on InvoiceNumbers
     /// </summary>
     /// <returns> string SQL </returns>
-    public static string FilterInvoiceNumber(int InvoiceNum)
+    public static string FilterInvoiceNumber(string InvoiceNum)
     {
 
         try
@@ -101,7 +116,7 @@ using System.Reflection;
     /// Get Invoice based on InvoiceCost
     /// </summary>
     /// <returns> string SQL</returns>
-    public static string FilterInvoiceCost(float InvoiceCost)
+    public static string FilterInvoiceCost(string InvoiceCost)
     {
         try
         {
@@ -120,7 +135,7 @@ using System.Reflection;
     /// <param name="InvoiceNum">invoice num </param>
     /// <param name="InvoiceDate">date of invoice</param>
     /// <returns> string SQL</returns>
-    public static string FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate)
+    public static string FilterInvoiceNumbersDate(string InvoiceNum, string InvoiceDate)
     {
 
         try
@@ -140,7 +155,7 @@ using System.Reflection;
     /// <param name="InvoiceCost">invoice cost of product</param>
     /// <param name="InvoiceDate">date of invoice</param>
     /// <returns> string SQL</returns>
-    public static string FilterInvoiceCostDate(float InvoiceCost, string InvoiceDate)
+    public static string FilterInvoiceCostDate(string InvoiceCost, string InvoiceDate)
     {
 
         try
@@ -160,7 +175,7 @@ using System.Reflection;
     /// <param name="InvoiceNum">invoice num </param>
     /// <param name="InvoiceCost">Cost of invoice</param>
     /// <returns>string SQL</returns>
-    public static string FilterInvoiceNumbersCost(int InvoiceNum, float InvoiceCost)
+    public static string FilterInvoiceNumbersCost(string InvoiceNum, string InvoiceCost)
     {
 
         try
@@ -181,7 +196,7 @@ using System.Reflection;
     /// <param name="InvoiceDate">date of invoice</param>
     /// <param name="InvoiceCost">Cost of invoice</param>
     /// <returns> string SQL</returns>
-    public static string FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate, float InvoiceCost)
+    public static string FilterInvoiceNumbersDate(string InvoiceNum, string InvoiceDate, string InvoiceCost)
     {
 
         try

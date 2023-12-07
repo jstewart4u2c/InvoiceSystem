@@ -33,6 +33,7 @@ namespace InvoiceSystem.Search
             SearchInvoiceNumber.ItemsSource = SearchLogic.GetDistinctInvoiceNumbers();
             SearchInvoiceDate.ItemsSource = SearchLogic.GetDistinctInvoiceDates();
             SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCosts();
+            SearchInvoice.ItemsSource = SearchLogic.GetInvoices();
         }
 
         /// <summary>
@@ -74,7 +75,16 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void SearchInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //call sql methods to update grid.
+            try
+            {
+                this.Hide();
+                Main.wndMain main = new Main.wndMain();
+                main.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>

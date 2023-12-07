@@ -15,12 +15,42 @@ namespace InvoiceSystem.Search
 {
     internal class clsSearchLogic
     {
-
+        public List<clsInvoices> lstInvoice;
         /// <summary>
         /// Gets Distinct InvoiceNumbers with statment
         /// </summary>
         /// <returns> list of string for combobox</returns>
-        public List<clsInvoices> lstInvoice;
+        public List<clsInvoices> GetInvoices()
+        {
+            try
+            {
+                //access database
+                List<clsInvoices> lstInvoice = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.GetInvoice(), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    lstInvoice.Add(invoice);
+                }
+                return lstInvoice;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+        /// <summary>
+        /// Gets Distinct InvoiceNumbers with statment
+        /// </summary>
+        /// <returns> list of string for combobox</returns>
         public List<string> GetDistinctInvoiceNumbers()
         {
             try
@@ -106,15 +136,28 @@ namespace InvoiceSystem.Search
         /// </summary>
         /// <param name="InvoiceNum">invoice num </param>
         /// <returns> list of string for combobox</returns>
-        public List<clsInvoices> FilterInvoiceNumbers(int InvoiceNum)
+        public List<clsInvoices> FilterInvoiceNumbers(string InvoiceNum)
         {
             //****** Future work
             try
             {
-                //Access database 
-                //get sql FilterInvoiceNumber(int InvoiceNum);
-                //loop
-                return lstInvoice;
+                //access database
+                List<clsInvoices> lstInvoiceByNumber = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.FilterInvoiceNumber(InvoiceNum), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    lstInvoiceByNumber.Add(invoice);
+                }
+                return lstInvoiceByNumber;
             }
             catch (Exception ex)
             {
@@ -132,11 +175,23 @@ namespace InvoiceSystem.Search
             //****** Future work
             try
             {
-                //Access database 
-                //get sql FilterInvoiceDate(int InvoiceNum);
-                //loop
-                //FilterInvoiceDate(string InvoiceDate)
-                return lstInvoice;
+                //access database
+                List<clsInvoices> lstInvoiceByNumber = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.FilterInvoiceDate(InvoiceDate), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sTotalCost = dr[0].ToString();
+                    lstInvoiceByNumber.Add(invoice);
+                }
+                return lstInvoiceByNumber;
             }
             catch (Exception ex)
             {
@@ -148,16 +203,28 @@ namespace InvoiceSystem.Search
         /// </summary>
         /// <param name="InvoiceCost">Cost of invoice</param>
         /// <returns> list of string for gid</returns>
-        public List<clsInvoices> FilterInvoiceCosts(float InvoiceCost)
+        public List<clsInvoices> FilterInvoiceCosts(string InvoiceCost)
         {
             //****** Future work
             try
             {
-                //Access database 
-                //get sql FilterInvoiceCosts(int InvoiceNum);
-                //loop
-                //FilterInvoiceCost(float InvoiceCost)
-                return lstInvoice;
+                //access database
+                List<clsInvoices> lstInvoiceByNumber = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.FilterInvoiceCost(InvoiceCost), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sTotalCost = dr[0].ToString();
+                    lstInvoiceByNumber.Add(invoice);
+                }
+                return lstInvoiceByNumber;
             }
             catch (Exception ex)
             {
@@ -171,15 +238,28 @@ namespace InvoiceSystem.Search
         /// <param name="InvoiceNum">invoice num </param>
         /// <param name="InvoiceDate">date of invoice</param>
         /// <returns> list of string for grid</returns>
-        public List<clsInvoices> FilterInvoiceNumbersDates(int InvoiceNum, string InvoiceDate)
+        public List<clsInvoices> FilterInvoiceNumbersDates(string InvoiceNum, string InvoiceDate)
         {
             //****** Future work
             try
             {
-                //Access database 
-                //get sql FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate)
-                //loop
-                return lstInvoice;
+                //access database
+                List<clsInvoices> lstInvoiceByNumber = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.FilterInvoiceNumbersDate(InvoiceNum, InvoiceDate), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sTotalCost = dr[0].ToString();
+                    lstInvoiceByNumber.Add(invoice);
+                }
+                return lstInvoiceByNumber;
             }
             catch (Exception ex)
             {
@@ -193,16 +273,28 @@ namespace InvoiceSystem.Search
         /// <param name="InvoiceCost">invoice cost of product</param>
         /// <param name="InvoiceDate">date of invoice</param>
         /// <returns> list of string for grid</returns>
-        public List<clsInvoices> FilterInvoiceCostDates(float InvoiceCost, string InvoiceDate)
+        public List<clsInvoices> FilterInvoiceCostDates(string InvoiceCost, string InvoiceDate)
         {
             //****** Future work
             try
             {
-                //Access database 
-                //get sql FilterInvoiceCostDate(float InvoiceCost, string InvoiceDate)
-                //loop
-
-                return lstInvoice;
+                //access database
+                List<clsInvoices> lstInvoiceByNumber = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.FilterInvoiceCostDate(InvoiceCost, InvoiceDate), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sTotalCost = dr[0].ToString();
+                    lstInvoiceByNumber.Add(invoice);
+                }
+                return lstInvoiceByNumber;
             }
             catch (Exception ex)
             {
@@ -216,16 +308,28 @@ namespace InvoiceSystem.Search
         /// <param name="InvoiceNum">invoice num </param>
         /// <param name="InvoiceCost">Cost of invoice</param>
         /// <returns> list of string for grid</returns>
-        public List<clsInvoices> FilterInvoiceNumbersCosts(int InvoiceNum, float InvoiceCost)
+        public List<clsInvoices> FilterInvoiceNumbersCosts(string InvoiceNum, string InvoiceCost)
         {
             //****** Future work
             try
             {
-                //Access database 
-                //get sql FilterInvoiceNumbersCost(int InvoiceNum, float InvoiceCost)
-                //loop
-                
-                return lstInvoice;
+                //access database
+                List<clsInvoices> lstInvoiceByNumber = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.FilterInvoiceNumbersCost(InvoiceNum, InvoiceCost), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sTotalCost = dr[0].ToString();
+                    lstInvoiceByNumber.Add(invoice);
+                }
+                return lstInvoiceByNumber;
             }
             catch (Exception ex)
             {
@@ -240,16 +344,28 @@ namespace InvoiceSystem.Search
         /// <param name="InvoiceDate">date of invoice</param>
         /// <param name="InvoiceCost">Cost of invoice</param>
         /// <returns> list of string for grid</returns>
-        public List<clsInvoices> FilterInvoiceNumbersDates(int InvoiceNum, string InvoiceDate, float InvoiceCost)
+        public List<clsInvoices> FilterInvoiceNumbersDates(string InvoiceNum, string InvoiceDate, string InvoiceCost)
         {
             //****** Future work
             try
             {
-                //Access database 
-                //get sql FilterInvoiceNumbersDate(int InvoiceNum, string InvoiceDate, float InvoiceCost)
-                //loop
-                
-                return lstInvoice;
+                //access database
+                List<clsInvoices> lstInvoiceByNumber = new List<clsInvoices>();
+                clsDataAccess db = new clsDataAccess();
+                DataSet ds = new DataSet();
+                int iRetVal = 0;
+                //execute statment
+                ds = db.ExecuteSQLStatement(clsSearchSQL.FilterInvoiceNumbersDate(InvoiceNum, InvoiceDate, InvoiceCost), ref iRetVal);
+                //loop through each
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    clsInvoices invoice = new clsInvoices();
+                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[0].ToString();
+                    invoice.sTotalCost = dr[0].ToString();
+                    lstInvoiceByNumber.Add(invoice);
+                }
+                return lstInvoiceByNumber;
             }
             catch (Exception ex)
             {

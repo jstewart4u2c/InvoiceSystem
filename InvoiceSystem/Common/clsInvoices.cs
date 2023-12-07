@@ -14,6 +14,6 @@ namespace InvoiceSystem.Common
     {
         public string sInvoiceNum { get; set; }
         public string sInvoiceDate { get; set; }
-        public string iTotalCost { get; set; }
+        public string sTotalCost { get; set; }
     }
 }
