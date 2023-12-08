@@ -11,7 +11,7 @@ using System.Reflection;
 	public class clsSearchSQL
 	{
     /// <summary>
-    /// Gets Distinct InvoiceNmm with sql statement
+    /// Gets Distinct InvoiceNmm with sql statement 
     /// </summary>
     /// <returns>  string SQL </returns>
     public static string GetInvoice()
