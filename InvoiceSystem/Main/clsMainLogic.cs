@@ -29,9 +29,6 @@ namespace InvoiceSystem.Main
                 /*Make Method that if User Presses Cancel, Lastest Invoice Will be Deleted*/
                 string GrabInvoiceNumber = sqlQuery.GrabLastestInvoiceID();
                 InvoiceNumber = Convert.ToInt32(db.ExecuteScalarSQL(GrabInvoiceNumber));
-                /*TestDelete so it doesnt save until i got everything working*/
-                string DeleteTest = sqlQuery.DeleteTest(InvoiceNumber);
-                db.ExecuteNonQuery(DeleteTest);
                 
                 return InvoiceNumber;
             }
