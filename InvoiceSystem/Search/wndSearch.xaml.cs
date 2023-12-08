@@ -1,4 +1,5 @@
-﻿using InvoiceSystem.Items;
+﻿using InvoiceSystem.Common;
+using InvoiceSystem.Items;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -26,6 +28,9 @@ namespace InvoiceSystem.Search
         bool bCost = false;
         bool bNum = false;
         bool bDate = false;
+        List<string> lsNum = new List<string>();
+        List<string> lsDate= new List<string>();
+        List<string> lsTemp = new List<string>();
         /// <summary>
         /// Initialize window objects
         /// </summary>
@@ -81,7 +86,8 @@ namespace InvoiceSystem.Search
             try
             {
                 bNum = true;
-                SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumbers(SearchInvoiceNumber.SelectedItem.ToString());
+                LoadData();
+                
 
             }
             catch (Exception ex)
@@ -96,8 +102,9 @@ namespace InvoiceSystem.Search
         private void SearchInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bDate = true;
+            LoadData();
             //call sql methods to update grid.
-            SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceDates(SearchInvoiceDate.SelectedItem.ToString());
+
         }
 
         /// <summary>
@@ -106,8 +113,9 @@ namespace InvoiceSystem.Search
         private void SearchTotalCosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bCost = true;
+            LoadData();
             //call sql methods to update grid.
-            SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceCosts(SearchTotalCosts.SelectedItem.ToString());
+
         }
 
         /// <summary>
@@ -124,12 +132,56 @@ namespace InvoiceSystem.Search
         /// <summary>
         /// close then open main and send invoice ID
         /// </summary>
-        private void SelectButton_Click(object sender, RoutedEventArgs e)
+        private void LoadData()
         {
-            //**** This will pass the selected Invoice ID to the main method.******
-            this.Hide();
-            Main.wndMain main = new Main.wndMain();
-            main.ShowDialog();
+                if (bNum)
+                {
+                    SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumbers(SearchInvoiceNumber.SelectedItem.ToString());
+                    if (bCost)
+                    {
+                        SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumbersCosts(SearchInvoiceNumber.SelectedItem.ToString(), SearchTotalCosts.SelectedItem.ToString());
+                        if (bDate)
+                        {
+                            SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumbersCostDates(SearchInvoiceNumber.SelectedItem.ToString(), SearchInvoiceDate.SelectedItem.ToString(), SearchTotalCosts.SelectedItem.ToString());
+                        }
+                    }
+                    else if (bDate)
+                    {
+                        SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumberDates(SearchInvoiceNumber.SelectedItem.ToString(), SearchInvoiceDate.SelectedItem.ToString());
+
+                    }
+                }
+                else if (bCost)
+                {
+                    SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceCosts(SearchTotalCosts.SelectedItem.ToString());
+                    if (bDate)
+                    {
+                        SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceCostDates(SearchTotalCosts.SelectedItem.ToString(), SearchInvoiceDate.SelectedItem.ToString());
+                    }
+                }
+                else if (bDate)
+                {
+                    SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceDates(SearchInvoiceDate.SelectedItem.ToString());
+                }
+                var invoiceNumbers = new List<string>();
+                var invoiceDates = new List<string>();
+                var totalCosts = new List<string>();
+
+                foreach (var item in SearchInvoice.ItemsSource)
+                {
+                    var invoice = item as clsInvoices; 
+                    if (invoice != null)
+                    {
+                        invoiceNumbers.Add(invoice.sInvoiceNum);
+                        invoiceDates.Add(invoice.sInvoiceDate);
+                        totalCosts.Add(invoice.sTotalCost);
+                    }
+                }
+
+                SearchInvoiceNumber.ItemsSource = invoiceNumbers;
+                SearchInvoiceDate.ItemsSource = invoiceDates;
+                SearchTotalCosts.ItemsSource = totalCosts;
+
         }
     }
 }

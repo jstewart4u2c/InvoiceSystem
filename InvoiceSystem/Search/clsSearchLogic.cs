@@ -153,8 +153,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoiceByNumber.Add(invoice);
                 }
                 return lstInvoiceByNumber;
@@ -187,8 +187,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sTotalCost = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoiceByNumber.Add(invoice);
                 }
                 return lstInvoiceByNumber;
@@ -220,8 +220,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sTotalCost = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoiceByNumber.Add(invoice);
                 }
                 return lstInvoiceByNumber;
@@ -238,7 +238,7 @@ namespace InvoiceSystem.Search
         /// <param name="InvoiceNum">invoice num </param>
         /// <param name="InvoiceDate">date of invoice</param>
         /// <returns> list of string for grid</returns>
-        public List<clsInvoices> FilterInvoiceNumbersDates(string InvoiceNum, string InvoiceDate)
+        public List<clsInvoices> FilterInvoiceNumberDates(string InvoiceNum, string InvoiceDate)
         {
             //****** Future work
             try
@@ -255,8 +255,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sTotalCost = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoiceByNumber.Add(invoice);
                 }
                 return lstInvoiceByNumber;
@@ -290,8 +290,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sTotalCost = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoiceByNumber.Add(invoice);
                 }
                 return lstInvoiceByNumber;
@@ -325,8 +325,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sTotalCost = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoiceByNumber.Add(invoice);
                 }
                 return lstInvoiceByNumber;
@@ -344,7 +344,7 @@ namespace InvoiceSystem.Search
         /// <param name="InvoiceDate">date of invoice</param>
         /// <param name="InvoiceCost">Cost of invoice</param>
         /// <returns> list of string for grid</returns>
-        public List<clsInvoices> FilterInvoiceNumbersDates(string InvoiceNum, string InvoiceDate, string InvoiceCost)
+        public List<clsInvoices> FilterInvoiceNumbersCostDates(string InvoiceNum, string InvoiceDate, string InvoiceCost)
         {
             //****** Future work
             try
@@ -361,8 +361,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sTotalCost = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoiceByNumber.Add(invoice);
                 }
                 return lstInvoiceByNumber;
