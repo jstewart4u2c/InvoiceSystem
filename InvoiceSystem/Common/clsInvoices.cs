@@ -16,4 +16,15 @@ namespace InvoiceSystem.Common
         public string sInvoiceDate { get; set; }
         public string sTotalCost { get; set; }
     }
+
+    /// <summary>
+    /// used to pass data around
+    /// </summary>
+    /// <returns> string of object</returns>
+    public static class clsInvoicesPass
+    {
+        public static string sSelectedInvoiceNum { get; set; }
+        public static string sSelectedInvoiceDate { get; set; }
+        public static  string sSelectedTotalCost { get; set; }
+    }
 }

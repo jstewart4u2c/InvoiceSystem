@@ -28,6 +28,7 @@ namespace InvoiceSystem.Search
         bool bCost = false;
         bool bNum = false;
         bool bDate = false;
+        bool bClear = true;
         List<string> lsNum = new List<string>();
         List<string> lsDate= new List<string>();
         List<string> lsTemp = new List<string>();
@@ -102,6 +103,7 @@ namespace InvoiceSystem.Search
         private void SearchInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bDate = true;
+
             LoadData();
             //call sql methods to update grid.
 
@@ -113,6 +115,7 @@ namespace InvoiceSystem.Search
         private void SearchTotalCosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             bCost = true;
+
             LoadData();
             //call sql methods to update grid.
 
@@ -124,9 +127,9 @@ namespace InvoiceSystem.Search
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
             //**** This will pass the selected Invoice ID to the main method.******
-            this.Hide();
+
             Main.wndMain main = new Main.wndMain();
-            main.ShowDialog();
+            this.Close();
         }
 
         /// <summary>
@@ -134,6 +137,9 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void LoadData()
         {
+            if (!bClear)
+            {
+
                 if (bNum)
                 {
                     SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumbers(SearchInvoiceNumber.SelectedItem.ToString());
@@ -169,7 +175,7 @@ namespace InvoiceSystem.Search
 
                 foreach (var item in SearchInvoice.ItemsSource)
                 {
-                    var invoice = item as clsInvoices; 
+                    var invoice = item as clsInvoices;
                     if (invoice != null)
                     {
                         invoiceNumbers.Add(invoice.sInvoiceNum);
@@ -181,7 +187,25 @@ namespace InvoiceSystem.Search
                 SearchInvoiceNumber.ItemsSource = invoiceNumbers;
                 SearchInvoiceDate.ItemsSource = invoiceDates;
                 SearchTotalCosts.ItemsSource = totalCosts;
+            }
+        }
 
+        private void btClearGrid_Click(object sender, RoutedEventArgs e)
+        {
+
+            bClear = true;
+            SearchLogic = new clsSearchLogic();
+            SearchInvoiceNumber.SelectedItem = null;
+            SearchInvoiceDate.SelectedItem = null;
+            SearchTotalCosts.SelectedItem = null;
+            SearchInvoice.ItemsSource = SearchLogic.GetInvoices();
+            SearchInvoiceNumber.ItemsSource = SearchLogic.GetDistinctInvoiceNumbers();
+            SearchInvoiceDate.ItemsSource = SearchLogic.GetDistinctInvoiceDates();
+            SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCosts();
+            bCost = false;
+            bNum = false;
+            bDate = false;
+            bClear = false;
         }
     }
 }
