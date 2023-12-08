@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Main"
         mc:Ignorable="d"
-        Title="Main Menu" Height="700" Width="530">
+        Title="Main Menu" Height="700" Width="530"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="29*"/>

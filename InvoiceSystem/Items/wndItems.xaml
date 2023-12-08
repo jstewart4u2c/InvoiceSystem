@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Items"
         mc:Ignorable="d"
-        Title="Items" Height="600" Width="530">
+        Title="Items" Height="600" Width="530"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style x:Key="HeaderLabel">

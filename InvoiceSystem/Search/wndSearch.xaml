@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:InvoiceSystem.Search"
         mc:Ignorable="d"
-        Title="wndSearch" Height="603" Width="533">
+        Title="wndSearch" Height="603" Width="533"
+        WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,0,-6">
         <DataGrid x:Name="SearchInvoice" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="35,88,26,214"/>
         <ComboBox x:Name="SearchInvoiceNumber" HorizontalAlignment="Left" Margin="35,433,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SearchInvoiceNumber_SelectionChanged"/>
@@ -17,7 +18,7 @@
             <MenuItem x:Name="NavMainMenu" Header="MainMenu" VerticalAlignment="Bottom" Click="NavMainMenu_Click"/>
             <MenuItem x:Name="NavUpdateItem" Header="UpdateItem" VerticalAlignment="Bottom" Click="NavUpdateItem_Click"/>
         </Menu>
-        <Label x:Name="SearchInvoiceLabel" Content="Invoioce Number:" HorizontalAlignment="Left" Margin="35,412,0,0" VerticalAlignment="Top" Foreground="Black"/>
+        <Label x:Name="SearchInvoiceLabel" Content="Invoice Number:" HorizontalAlignment="Left" Margin="35,412,0,0" VerticalAlignment="Top" Foreground="Black"/>
         <Label x:Name="lbInvoiceDate" Content="Invoice Data:" HorizontalAlignment="Left" Margin="211,415,0,0" VerticalAlignment="Top" Foreground="Black"/>
         <Label x:Name="lbTotalCost" Content="Total Costs:" HorizontalAlignment="Left" Margin="387,415,0,0" VerticalAlignment="Top" Foreground="Black"/>
         <Button x:Name="btClearGrid" Content="Clear" HorizontalAlignment="Left" Margin="211,505,0,0" VerticalAlignment="Top" Height="30" Width="120" Click="btClearGrid_Click"/>
