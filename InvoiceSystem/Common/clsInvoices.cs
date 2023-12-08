@@ -24,7 +24,5 @@ namespace InvoiceSystem.Common
     public static class clsInvoicesPass
     {
         public static string sSelectedInvoiceNum { get; set; }
-        public static string sSelectedInvoiceDate { get; set; }
-        public static  string sSelectedTotalCost { get; set; }
     }
 }

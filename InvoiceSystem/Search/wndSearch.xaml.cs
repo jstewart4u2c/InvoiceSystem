@@ -29,6 +29,7 @@ namespace InvoiceSystem.Search
         bool bNum = false;
         bool bDate = false;
         bool bClear = true;
+        bool SelectedID = false;
         List<string> lsNum = new List<string>();
         List<string> lsDate= new List<string>();
         List<string> lsTemp = new List<string>();
@@ -105,7 +106,7 @@ namespace InvoiceSystem.Search
             bDate = true;
 
             LoadData();
-            //call sql methods to update grid.
+
 
         }
 
@@ -117,7 +118,7 @@ namespace InvoiceSystem.Search
             bCost = true;
 
             LoadData();
-            //call sql methods to update grid.
+
 
         }
 
@@ -126,10 +127,17 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
-            //**** This will pass the selected Invoice ID to the main method.******
+            if (SearchInvoice.SelectedItem != null)
+            {
+                var selectedItem = (clsInvoices)SearchInvoice.SelectedItem;
 
-            Main.wndMain main = new Main.wndMain();
-            this.Close();
+                string sNumID = selectedItem.sInvoiceNum;
+
+                clsInvoicesPass.sSelectedInvoiceNum = sNumID;
+
+                Main.wndMain main = new Main.wndMain();
+                this.Close();
+            }
         }
 
         /// <summary>
