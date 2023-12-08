@@ -18,7 +18,7 @@ using System.Reflection;
     {
         try
         {
-            string SQL = "SELECT DISTINCT(InvoiceNum) FROM Invoices ORDER BY InvoiceNum";
+            string SQL = "SELECT * FROM Invoices ORDER BY InvoiceNum";
             return SQL;
         }
         catch (Exception ex)

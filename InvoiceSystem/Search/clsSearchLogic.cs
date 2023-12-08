@@ -36,8 +36,8 @@ namespace InvoiceSystem.Search
                 {
                     clsInvoices invoice = new clsInvoices();
                     invoice.sInvoiceNum = dr[0].ToString();
-                    invoice.sInvoiceDate = dr[0].ToString();
-                    invoice.sInvoiceNum = dr[0].ToString();
+                    invoice.sInvoiceDate = dr[1].ToString();
+                    invoice.sTotalCost = dr[2].ToString();
                     lstInvoice.Add(invoice);
                 }
                 return lstInvoice;

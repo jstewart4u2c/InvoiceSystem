@@ -22,14 +22,17 @@ namespace InvoiceSystem.Search
     /// </summary>
     public partial class wndSearch : Window
     {
-
+        clsSearchLogic SearchLogic = new clsSearchLogic();
+        bool bCost = false;
+        bool bNum = false;
+        bool bDate = false;
         /// <summary>
         /// Initialize window objects
         /// </summary>
         public wndSearch()
         {
             InitializeComponent();
-            clsSearchLogic SearchLogic = new clsSearchLogic();
+            SearchLogic = new clsSearchLogic();
             SearchInvoiceNumber.ItemsSource = SearchLogic.GetDistinctInvoiceNumbers();
             SearchInvoiceDate.ItemsSource = SearchLogic.GetDistinctInvoiceDates();
             SearchTotalCosts.ItemsSource = SearchLogic.GetDistinctInvoiceCosts();
@@ -77,9 +80,9 @@ namespace InvoiceSystem.Search
         {
             try
             {
-                this.Hide();
-                Main.wndMain main = new Main.wndMain();
-                main.ShowDialog();
+                bNum = true;
+                SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumbers(SearchInvoiceNumber.SelectedItem.ToString());
+
             }
             catch (Exception ex)
             {
@@ -92,8 +95,9 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void SearchInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            bDate = true;
             //call sql methods to update grid.
-
+            SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceDates(SearchInvoiceDate.SelectedItem.ToString());
         }
 
         /// <summary>
@@ -101,7 +105,20 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void SearchTotalCosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            bCost = true;
             //call sql methods to update grid.
+            SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceCosts(SearchTotalCosts.SelectedItem.ToString());
+        }
+
+        /// <summary>
+        /// close then open main and send invoice ID
+        /// </summary>
+        private void SelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            //**** This will pass the selected Invoice ID to the main method.******
+            this.Hide();
+            Main.wndMain main = new Main.wndMain();
+            main.ShowDialog();
         }
 
         /// <summary>
