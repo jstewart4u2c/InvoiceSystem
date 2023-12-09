@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InvoiceSystem.Search;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
@@ -76,6 +77,8 @@ namespace InvoiceSystem.Items
             try
             {
                 this.Hide();
+                wndSearch search = new wndSearch();
+                search.Show();
             }
             catch (Exception ex)
             {

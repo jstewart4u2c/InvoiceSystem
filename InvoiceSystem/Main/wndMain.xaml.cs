@@ -24,7 +24,9 @@ namespace InvoiceSystem.Main
         public wndMain()
         {
             InitializeComponent();
+            UserDatePicker.SelectedDate = DateTime.Now;
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
         }
 
         /// <summary>
@@ -148,6 +150,7 @@ namespace InvoiceSystem.Main
         /// <param name="e"></param>
         private void CreateInvoiceClick(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 BeginButton.Content = "Create Invoice";
@@ -294,23 +297,27 @@ namespace InvoiceSystem.Main
                 }
                 else
                 {
-                /*Disable Menu Until User Decides to Update*/
-                ChangeEnableStatus();
-                /*Allow User to Press Update*/
-                UpdateInvoiceButton.Visibility = Visibility.Visible;
-                CancelInvoiceButton.Visibility = Visibility.Hidden;
+                        /*Disable Menu Until User Decides to Update*/
+                        ChangeEnableStatus();
+                        /*Allow User to Press Update*/
+                        UpdateInvoiceButton.Visibility = Visibility.Visible;
+                        CancelInvoiceButton.Visibility = Visibility.Hidden;
 
-                logic.UpdateTotalPrice(InvoiceNumberLabel.Content.ToString());
-                    DateTime SelectedDate = UserDatePicker.SelectedDate.Value.Date;
-                    logic.UpdateDate(UserDatePicker.SelectedDate.Value.Date);
-                    if (clsInvoicesPass.IsUpdating)
+                        logic.UpdateDate(UserDatePicker.SelectedDate.Value.Date);
+                        logic.UpdateTotalPrice(InvoiceNumberLabel.Content.ToString());
+
+                        if (clsInvoicesPass.IsUpdating)
+                        {
+                            db.ExecuteNonQuery(sqlQuery.DeleteCopy());
+                            clsInvoicesPass.IsUpdating = false;
+                        }
+
+                    else
                     {
-                        db.ExecuteNonQuery(sqlQuery.DeleteCopy());
-                        clsInvoicesPass.IsUpdating = false;
-                    }
+                        ErrorTextBox.Visibility= Visibility.Visible;
+                        ErrorTextBox.Text = "A Date Must Be Selected";
+                    } 
                 }
-                //Hide Buttons
-                CancelInvoiceButton.Visibility = Visibility.Hidden;
                 UpdateInvoiceButton.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
