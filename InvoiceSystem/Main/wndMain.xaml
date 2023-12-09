@@ -36,14 +36,9 @@
             </Grid>
         </Border>
     <!--DataGrid Grid-->
-        <DataGrid x:Name="AddedItemsDataGrid" Grid.Row="3" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="10,6,10,43" IsEnabled="False" MinRowHeight="1" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" MinColumnWidth="25" CanUserSortColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Item Number" />
-                <DataGridTextColumn Header="Item"/>
-                <DataGridTextColumn Header="Price"/>
-            </DataGrid.Columns>
+        <DataGrid x:Name="AddedItemsDataGrid" Grid.Row="3" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="10,6,10,43" IsEnabled="False" MinRowHeight="1" IsReadOnly="True" CanUserSortColumns="False" MinColumnWidth="25">
         </DataGrid>
-        <Button x:Name="DeleteItemButton" Content="Delete Item" HorizontalAlignment="Left" Margin="384,272,0,0" VerticalAlignment="Top" Height="27" Width="98" FontSize="15" FontFamily="Sitka Display" Grid.Row="3" RenderTransformOrigin="0.467,0.26" Background="#FF9E1B1B" IsEnabled="False"/>
+        <Button x:Name="DeleteItemButton" Content="Delete Item" HorizontalAlignment="Left" Margin="384,272,0,0" VerticalAlignment="Top" Height="27" Width="98" FontSize="15" FontFamily="Sitka Display" Grid.Row="3" RenderTransformOrigin="0.467,0.26" Background="#FF9E1B1B" IsEnabled="False" Click="DeleteItemClick"/>
         <TextBox x:Name="TotalCostTextBox" HorizontalAlignment="Left" Margin="46,272,0,0" TextWrapping="Wrap" Text="Total Cost" VerticalAlignment="Top" Width="98" IsReadOnly="True" Height="27" FontSize="15" FontFamily="Sitka Display" Grid.Row="3" IsEnabled="False" RenderTransformOrigin="0.495,1.149" />
         <!--Final Grid-->
         <Button x:Name="SaveInvoiceButton" Content="Save Invoice" HorizontalAlignment="Center" VerticalAlignment="Top" Height="38" Width="128" FontFamily="Sitka Text" Grid.Row="4" FontSize="20" Background="#FF299448" IsEnabled="False" Click="SaveInvoiceClick" Margin="0,4,0,0"/>

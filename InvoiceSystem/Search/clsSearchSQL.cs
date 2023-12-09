@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OleDb;
-using System.IO;
 using System.Reflection;
 
-    /// <summary>
-    /// Class used to access the database.
-    /// </summary>
-	public class clsSearchSQL
-	{
+/// <summary>
+/// Class used to access the database.
+/// </summary>
+public class clsSearchSQL
+{
     /// <summary>
     /// Gets Distinct InvoiceNmm with sql statement 
     /// </summary>

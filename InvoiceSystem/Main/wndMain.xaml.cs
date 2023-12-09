@@ -2,22 +2,10 @@
 using InvoiceSystem.Items;
 using InvoiceSystem.Search;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace InvoiceSystem.Main
 {
@@ -31,25 +19,32 @@ namespace InvoiceSystem.Main
         clsMainLogic logic = new clsMainLogic();
         clsDataAccess db = new clsDataAccess();
         DataSet ds;
-        bool IsDeleting = false;
         int ItemCount;
+        bool IsNew;
         public wndMain()
         {
             InitializeComponent();
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
-        /*Navigate to Search Window*/
+/****NAV METHODS***/
+          /// <summary>
+          /// Navigating To Search Window
+          /// </summary>
+          /// <param name="sender"></param>
+          /// <param name="e"></param>
         private async void NavToSearchWnd(object sender, RoutedEventArgs e)
         {
-            try { 
-               /*Check if User is Creating or Editing*/
-               if(!MenuEnabled) {
-               /*Close Main Window*/
-               this.Hide();
-               wndSearch search = new wndSearch();
-               search.ShowDialog();
-               this.Show();
+            try
+            {
+                /*Check if User is Creating or Editing*/
+                if (!MenuEnabled)
+                {
+                    /*Close Main Window*/
+                    this.Hide();
+                    wndSearch search = new wndSearch();
+                    search.ShowDialog();
+                    this.Show();
 
                     /*When Search Window is Closed Gather Current ID Selected*/
                 }//End IF
@@ -57,22 +52,30 @@ namespace InvoiceSystem.Main
                 {
                     ErrorTextBox.Visibility = Visibility.Visible;
                     ErrorTextBox.Text = "Please Make Sure to Save or Cancel Your Current Invoice";
-                
+
                     await Task.Delay(5000);
                     ErrorTextBox.Visibility = Visibility.Hidden;
                 }//End Else
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-        }//End Nav Search Button
+        }
 
+        /// <summary>
+        /// Navigating To Item Window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void NavToItemWnd(object sender, RoutedEventArgs e)
         {
-            try { 
+            try
+            {
                 /*Check if User is Creating or Editing*/
                 /*Close Main Window*/
-                if (!MenuEnabled) {
+                if (!MenuEnabled)
+                {
                     this.Hide();
                     wndItems items = new wndItems();
                     items.ShowDialog();
@@ -84,28 +87,36 @@ namespace InvoiceSystem.Main
                     ErrorTextBox.Text = "Please Make Sure to Save or Cancel Your Current Invoice";
 
                     await Task.Delay(5000);
-                    ErrorTextBox.Visibility = Visibility.Hidden;     
+                    ErrorTextBox.Visibility = Visibility.Hidden;
                 }//End Else
             }
             catch (Exception ex)
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-        }//End Nav Item Button
+        }
 
-        /*Create A Invoice and Add to Invoice Table*/
+/*****Create OR Update Data******/
+        /// <summary>
+        /// Creating A new Invoice And Enabling The Bottom Half Of the Screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreateInvoiceClick(object sender, RoutedEventArgs e)
         {
-            try { 
-            /*Clear Item Drop Box so It doesnt just keep filling it up*/
+            try
+            {
+                IsNew = true;
+                /*Clear Item Drop Box so It doesnt just keep filling it up*/
                 SelectItemDropBox.Items.Clear();
+                ItemCount = 0;
                 ContentGridLabel.Content = "Create a New Invoice";
                 CostTextBox.Text = "$0";
                 /*Enable All Items*/
                 ChangeEnableStatus();
                 /*Show Cancel Button*/
                 CancelInvoiceButton.Visibility = Visibility.Visible;
-            
+
                 /*Load DropDown Menu*/
                 int iRet = 0;
 
@@ -118,21 +129,22 @@ namespace InvoiceSystem.Main
                     SelectItemDropBox.Items.Add(ds.Tables[0].Rows[i][1].ToString());
                 }
                 /*Add a New Invoice Number to Invoice Table, Add Date*/
-                    int InvoiceNumber = logic.AddInvoice();
+                string InvoiceNumber = logic.AddInvoice();
                 /*Check if Invoice Number was Gathered Correctly*/
-                if(InvoiceNumber == 0)
-                    {
-                        ErrorTextBox.Visibility= Visibility.Visible;
-                        ErrorTextBox.Text = "Sorry, Something Went Wrong, Try Again";
-                        ChangeEnableStatus();
-                    }
-                else {
+                if (InvoiceNumber == null)
+                {
+                    ErrorTextBox.Visibility = Visibility.Visible;
+                    ErrorTextBox.Text = "Sorry, Something Went Wrong, Try Again";
+                    ChangeEnableStatus();
+                }
+                else
+                {
                     /*Set labels*/
-                    InvoiceNumberLabel.Content = InvoiceNumber.ToString();
+                    InvoiceNumberLabel.Content = InvoiceNumber;
                     var TodaysDate = DateOnly.FromDateTime(DateTime.Now);
                     DateLabel.Content = TodaysDate;
-            }
-            /*TODO::When Clicked Again, Wipe Fields*/
+                }
+                /*TODO::When Clicked Again, Wipe Fields*/
             }
             catch (Exception ex)
             {
@@ -159,14 +171,82 @@ namespace InvoiceSystem.Main
             }
         }
 
+        private void AddItem(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Make Sure Its Not Empty 
+                if(SelectItemDropBox.Text == "" || SelectItemDropBox.Text == null)
+                {
+                    ErrorTextBox.Text = "Please Make Sure To Select A Item";
+                }
+                else { 
+                /*Adding Item to Datagrid*/
+                string ItemDesc;
+                string ItemPrice;
+
+                ItemDesc = SelectItemDropBox.Text;
+                string PriceQuery = sqlQuery.GrabItemPrice(SelectItemDropBox.Text);
+                ItemPrice = db.ExecuteScalarSQL(PriceQuery);
+                ItemCount++;
+                string InvoiceNumber = InvoiceNumberLabel.Content.ToString();
+
+                logic.AddToLineItemsTable(ItemDesc, InvoiceNumber, ItemCount, ItemPrice);
+                logic.UpdateDataGrid(AddedItemsDataGrid);
+
+                AddedItemsDataGrid.Columns[0].Header = "Item Number";
+                AddedItemsDataGrid.Columns[1].Header = "Item Description";
+                AddedItemsDataGrid.Columns[2].Header = "Cost";
+
+                TotalCostTextBox.Text = "$" + logic.TotalPrice.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /******SAVE AND DELETE******/
+        /// <summary>
+        /// Saving The Invoice, Disable Everything Again
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveInvoiceClick(object sender, RoutedEventArgs e)
         {
-            try { 
+            try
+            {
                 /*Disable Menu Until User Decides to Update*/
                 ChangeEnableStatus();
                 /*Allow User to Press Update*/
                 UpdateInvoiceButton.Visibility = Visibility.Visible;
                 CancelInvoiceButton.Visibility = Visibility.Hidden;
+
+                logic.UpdateTotalPrice(InvoiceNumberLabel.Content.ToString());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        private void DeleteItemClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //Check That User Has A Item Selected 
+                if (AddedItemsDataGrid.SelectedItem != null)
+                {
+                    int index = AddedItemsDataGrid.SelectedIndex;
+                    //Delete Item
+                    logic.DeleteItemOffList(index);
+                    logic.UpdateDataGrid(AddedItemsDataGrid);
+                }
+                else
+                {
+                    ErrorTextBox.Text = "No Item Was Selected";
+                }
             }
             catch (Exception ex)
             {
@@ -176,22 +256,41 @@ namespace InvoiceSystem.Main
 
         private void CancelCurrentButton(object sender, RoutedEventArgs e)
         {
-            try { 
+            try
+            {
                 ChangeEnableStatus();
                 CancelInvoiceButton.Visibility = Visibility.Hidden;
 
-                /*If new Invoice is being made and canceled, Delete Invoice*/ 
-                /*If Update is canceled, just dont save changes*/
-            }catch(Exception ex)
+                ErrorTextBox.Text = "Canceled A New Set";
+                logic.DeleteAll();
+                AddedItemsDataGrid.DataContext = null;
+                logic.UpdateDataGrid(AddedItemsDataGrid);
+
+                AddedItemsDataGrid.Columns[0].Header = "Item Number";
+                AddedItemsDataGrid.Columns[1].Header = "Item Description";
+                AddedItemsDataGrid.Columns[2].Header = "Cost";
+
+                TotalCostTextBox.Text = "$" + logic.TotalPrice.ToString();
+
+                InvoiceNumberLabel.Content = "";
+                DateLabel.Content = "";
+
+                SelectItemDropBox.Items.Clear();
+                CostTextBox.Text = "$0";
+
+
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
-        /*Returns The Opposite Bool Value so We can Enable and Disable Menu*/
+/****EXTRA METHODS*****/
         public void ChangeEnableStatus()
         {
-            try { 
+            try
+            {
                 MenuEnabled = !MenuEnabled;
                 CreateOrEditContentGrid.IsEnabled = !CreateOrEditContentGrid.IsEnabled;
                 AddedItemsDataGrid.IsEnabled = !AddedItemsDataGrid.IsEnabled;
@@ -200,7 +299,8 @@ namespace InvoiceSystem.Main
                 TotalCostTextBox.IsEnabled = !TotalCostTextBox.IsEnabled;
                 BeginButton.IsEnabled = !BeginButton.IsEnabled;
                 UpdateInvoiceButton.IsEnabled = !UpdateInvoiceButton.IsEnabled;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
@@ -223,43 +323,12 @@ namespace InvoiceSystem.Main
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-        private void AddItem(object sender, RoutedEventArgs e)
+        
+        public void UpdateWindow(string InvoiceNum)
         {
-            try
-            {
-                /*Adding Item to Datagrid*/
-                string ItemDesc;
-                string ItemPrice;
-
-                ItemDesc = SelectItemDropBox.Text;
-                ItemPrice = CostTextBox.Text;
-                ItemCount++;
-                string InvoiceNumber = InvoiceNumberLabel.Content.ToString();
-
-                logic.AddToLineItemsTable(ItemDesc, InvoiceNumber, ItemCount);
-
-
-                //Put ItemDesc and ItemPrice into DataGrid (Might be able to do it by loading the database and joining tables 
-                //SELECT ItemDesc.ItemDesc, ItemDesc.ItemPrice from ItemDesc,
-                //inner join LineItems on LineItems.ItemCode = ItemDesc.ItemCode
-                //Where LineItems.InvoiceNumber = InvoiceNumber
-
-
-                //Add Up Total Cost ** DONT SAVE UNTIL USER PRESSES SAVE
-                
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
-            }
+            logic.UpdateCurrentInvoice(InvoiceNum);
+            logic.UpdateDataGrid(AddedItemsDataGrid);
         }
-
-        /*TODO 
-        *Allow User To Delete A Item  
-        *Overall Save Button(Save all database changes)
-        *Display Search
-        */
-
+        
     }
 }

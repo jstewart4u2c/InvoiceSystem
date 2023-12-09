@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace InvoiceSystem.Items
@@ -87,9 +84,9 @@ namespace InvoiceSystem.Items
         public void AddEditData(string newDesc, string newCost, DataGrid dataGrid)
         {
             try
-            {   
+            {
                 //If adding, selected index is -1
-                if(dataGrid.SelectedIndex == -1)
+                if (dataGrid.SelectedIndex == -1)
                 {
                     DataRow newRow = ds.Tables[0].NewRow();
 
@@ -103,17 +100,17 @@ namespace InvoiceSystem.Items
                     db.ExecuteNonQuery(itemSQL.AddItem(count, newDesc, newCost));
                 }
                 //else, edit selected index row information
-                else 
+                else
                 {
                     ds.Tables[0].Rows[dataGrid.SelectedIndex][1] = newDesc;
                     ds.Tables[0].Rows[dataGrid.SelectedIndex][2] = newCost;
 
                     string itemCode = ds.Tables[0].Rows[dataGrid.SelectedIndex][0].ToString();
 
-                    
+
                     db.ExecuteNonQuery(itemSQL.UpdateItem(count, newDesc, newCost));
                 }
-                
+
                 ds.AcceptChanges();
 
             }
@@ -154,22 +151,22 @@ namespace InvoiceSystem.Items
                 string itemCode = ds.Tables[0].Rows[index]["ItemCode"].ToString();
                 int invoiceID;
 
-                if(itemCode != null)
+                if (itemCode != null)
                 {
                     int retVal = 0;
 
                     //create new dataset with the invoices from itemCode
                     DataSet ds1 = db.ExecuteSQLStatement(itemSQL.GetInvoicesForItem(itemCode), ref retVal);
-                    
+
                     //for each row, add 
-                    foreach(DataRow row in ds1.Tables[0].Rows)
+                    foreach (DataRow row in ds1.Tables[0].Rows)
                     {
                         //parse invoiceNum into an int, add to invoice list
-                        if(int.TryParse(row["InvoiceNum"].ToString(), out invoiceID))
+                        if (int.TryParse(row["InvoiceNum"].ToString(), out invoiceID))
                         {
                             invoices.Add(invoiceID);
                         }
-                    }   
+                    }
                 }
 
                 return invoices;

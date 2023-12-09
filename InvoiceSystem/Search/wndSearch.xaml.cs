@@ -30,7 +30,7 @@ namespace InvoiceSystem.Search
         bool bDate = false;
         bool bClear = true;
         List<string> lsNum = new List<string>();
-        List<string> lsDate= new List<string>();
+        List<string> lsDate = new List<string>();
         List<string> lsTemp = new List<string>();
         /// <summary>
         /// Initialize window objects
@@ -88,7 +88,7 @@ namespace InvoiceSystem.Search
             {
                 bNum = true;
                 LoadData();
-                
+
 
             }
             catch (Exception ex)

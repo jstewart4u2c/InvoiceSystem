@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InvoiceSystem.Common
+﻿namespace InvoiceSystem.Common
 {
     /// <summary>
     /// gets/sets invoice objects
@@ -25,6 +19,6 @@ namespace InvoiceSystem.Common
     {
         public static string sSelectedInvoiceNum { get; set; }
         public static string sSelectedInvoiceDate { get; set; }
-        public static  string sSelectedTotalCost { get; set; }
+        public static string sSelectedTotalCost { get; set; }
     }
 }

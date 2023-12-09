@@ -8,7 +8,7 @@
         Title="wndSearch" Height="603" Width="533"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="0,0,0,-6">
-        <DataGrid x:Name="SearchInvoice" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="35,88,26,214"/>
+        <DataGrid x:Name="SearchInvoice" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="35,88,26,214" IsReadOnly="True" CanUserSortColumns="False"/>
         <ComboBox x:Name="SearchInvoiceNumber" HorizontalAlignment="Left" Margin="35,433,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SearchInvoiceNumber_SelectionChanged"/>
         <ComboBox x:Name="SearchInvoiceDate" HorizontalAlignment="Left" Margin="211,433,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SearchInvoiceDate_SelectionChanged"/>
         <ComboBox x:Name="SearchTotalCosts" HorizontalAlignment="Left" Margin="387,433,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="SearchTotalCosts_SelectionChanged"/>

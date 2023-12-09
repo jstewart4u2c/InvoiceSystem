@@ -1,20 +1,9 @@
-﻿using InvoiceSystem.Main;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace InvoiceSystem.Items
 {
@@ -29,7 +18,7 @@ namespace InvoiceSystem.Items
         /// </summary>
         public static bool itemListModified;
         #endregion
-     
+
         /// <summary>
         /// Opens new logic class
         /// </summary>
@@ -50,7 +39,7 @@ namespace InvoiceSystem.Items
 
                 //editItemButton.IsEnabled = false;
                 deleteItemButton.IsEnabled = false;
-                
+
             }
             catch (Exception ex)
             {
@@ -68,7 +57,7 @@ namespace InvoiceSystem.Items
         {
             try
             {
-                this.Hide();                 
+                this.Hide();
             }
             catch (Exception ex)
             {
@@ -113,16 +102,16 @@ namespace InvoiceSystem.Items
                     //Set read only to false so user can edit
                     descTextBox.IsReadOnly = false;
                     costTextBox.IsReadOnly = false;
-                    
+
                     //Set a variable for currently selected item
                     DataRowView selected = (DataRowView)itemDataGrid.SelectedItem;
 
-                    logic.UpdateSelectedText(selected, descTextBox, costTextBox);               
+                    logic.UpdateSelectedText(selected, descTextBox, costTextBox);
                 }
                 else
                 {
                     descTextBox.Text = "";
-                }  
+                }
             }
             catch (Exception ex)
             {
@@ -176,7 +165,7 @@ namespace InvoiceSystem.Items
             try
             {
                 //ensure a valid line item is selected
-                if(itemDataGrid.SelectedItem != null)
+                if (itemDataGrid.SelectedItem != null)
                 {
                     //get index from selected item
                     int index = itemDataGrid.SelectedIndex;
@@ -186,11 +175,11 @@ namespace InvoiceSystem.Items
                     invoices = logic.GetInvoices(index, invoices);
 
                     //if the invoices list after database retrieval has data, show associated invoice conflicts
-                    if(invoices != null && invoices.Count > 0)
+                    if (invoices != null && invoices.Count > 0)
                     {
                         string invoiceErrorMessage = "This item is on the following invoices:\n";
 
-                        foreach(var invoiceNum in invoices)
+                        foreach (var invoiceNum in invoices)
                         {
                             invoiceErrorMessage += $"{invoiceNum}\n";
                         }
@@ -239,7 +228,7 @@ namespace InvoiceSystem.Items
                 //enable add item button (since it was disabled after pushing it once)
                 addItemButton.IsEnabled = true;
 
-                if(itemDataGrid.SelectedIndex == -1)
+                if (itemDataGrid.SelectedIndex == -1)
                 {
                     descTextBox.IsReadOnly = true;
                     costTextBox.IsReadOnly = true;
@@ -253,7 +242,7 @@ namespace InvoiceSystem.Items
             {
                 throw new Exception(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
-            
+
         }
     }
 }

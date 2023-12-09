@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Data;
-using System.Data.OleDb;
-using System.IO;
 using System.Reflection;
-using System.Windows.Navigation;
 
 /// <summary>
 /// Class used to access the database.
