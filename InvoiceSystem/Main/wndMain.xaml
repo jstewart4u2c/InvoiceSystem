@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:InvoiceSystem.Main"
         mc:Ignorable="d"
         Title="Main Menu" Height="700" Width="530"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" Closing="CancelInvoice">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="29*"/>
@@ -28,18 +28,18 @@
             <Grid x:Name="CreateOrEditContentGrid" Grid.Row="1" Margin="-2,-2,-2,-2" Grid.RowSpan="2" IsEnabled="False">
                 <Label x:Name="ContentGridLabel" Content="Create a New Invoice" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="Black" FontFamily="Sitka Text" FontSize="15" Margin="0,8,0,0"/>
                 <ComboBox x:Name="SelectItemDropBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" FontFamily="Sitka Text" Margin="0,52,0,0" DropDownClosed="ItemSelected"/>
-                <Label x:Name="DateLabel" Content="Date" HorizontalAlignment="Left" Margin="399,17,0,0" VerticalAlignment="Top" Foreground="Black" FontFamily="Sitka Text"/>
                 <Label x:Name="SelectItemLabel" Content="Select Item" HorizontalAlignment="Center" Margin="0,32,0,0" VerticalAlignment="Top" Foreground="Black" FontFamily="Sitka Text"/>
                 <TextBox x:Name="CostTextBox" HorizontalAlignment="Left" Margin="29,101,0,0" TextWrapping="Wrap" Text="Cost" VerticalAlignment="Top" Width="99" IsReadOnly="True" Height="27" FontSize="15" FontFamily="Sitka Display" />
                 <Button x:Name="AddItemButton" Content="Add Item" Margin="363,101,29,0" VerticalAlignment="Top" Height="27" FontSize="15" FontFamily="Sitka Display" Click="AddItem"/>
-                <Label x:Name="InvoiceNumberLabel" Content="Invoice Number" HorizontalAlignment="Left" Margin="29,14,0,0" VerticalAlignment="Top" Foreground="Black" FontFamily="Sitka Text"/>
+                <Label x:Name="InvoiceNumberLabel" Content="Invoice Number" HorizontalAlignment="Left" Margin="29,19,0,0" VerticalAlignment="Top" Foreground="Black" FontFamily="Sitka Text"/>
+                <DatePicker x:Name="UserDatePicker" HorizontalAlignment="Left" Margin="369,14,0,0" VerticalAlignment="Top" Height="26" IsEnabled="False"/>
             </Grid>
         </Border>
     <!--DataGrid Grid-->
-        <DataGrid x:Name="AddedItemsDataGrid" Grid.Row="3" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="10,6,10,43" IsEnabled="False" MinRowHeight="1" IsReadOnly="True" CanUserSortColumns="False" MinColumnWidth="25">
+        <DataGrid x:Name="AddedItemsDataGrid" Grid.Row="3" d:ItemsSource="{d:SampleData ItemCount=0}" Margin="10,6,10,43"  MinRowHeight="1" IsReadOnly="True" CanUserSortColumns="False" MinColumnWidth="25">
         </DataGrid>
         <Button x:Name="DeleteItemButton" Content="Delete Item" HorizontalAlignment="Left" Margin="384,272,0,0" VerticalAlignment="Top" Height="27" Width="98" FontSize="15" FontFamily="Sitka Display" Grid.Row="3" RenderTransformOrigin="0.467,0.26" Background="#FF9E1B1B" IsEnabled="False" Click="DeleteItemClick"/>
-        <TextBox x:Name="TotalCostTextBox" HorizontalAlignment="Left" Margin="46,272,0,0" TextWrapping="Wrap" Text="Total Cost" VerticalAlignment="Top" Width="98" IsReadOnly="True" Height="27" FontSize="15" FontFamily="Sitka Display" Grid.Row="3" IsEnabled="False" RenderTransformOrigin="0.495,1.149" />
+        <TextBox x:Name="TotalCostTextBox" HorizontalAlignment="Left" Margin="46,272,0,0" TextWrapping="Wrap" Text="Total Cost" VerticalAlignment="Top" Width="98" IsReadOnly="True" Height="27" FontSize="15" FontFamily="Sitka Display" Grid.Row="3"  RenderTransformOrigin="0.495,1.149" IsEnabled="False"/>
         <!--Final Grid-->
         <Button x:Name="SaveInvoiceButton" Content="Save Invoice" HorizontalAlignment="Center" VerticalAlignment="Top" Height="38" Width="128" FontFamily="Sitka Text" Grid.Row="4" FontSize="20" Background="#FF299448" IsEnabled="False" Click="SaveInvoiceClick" Margin="0,4,0,0"/>
         <Button x:Name="CancelInvoiceButton" Content="Cancel" HorizontalAlignment="Center" Margin="0,51,0,0" VerticalAlignment="Top" Height="27" Width="92" FontSize="15" FontFamily="Sitka Display" Grid.Row="4" RenderTransformOrigin="0.467,0.26" Background="#FF9E1B1B" Visibility="Hidden" Click="CancelCurrentButton" />

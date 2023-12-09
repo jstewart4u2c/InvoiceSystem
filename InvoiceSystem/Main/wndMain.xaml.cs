@@ -20,19 +20,56 @@ namespace InvoiceSystem.Main
         clsDataAccess db = new clsDataAccess();
         DataSet ds;
         int ItemCount;
-        bool IsNew;
+        bool ResetAll = true;
         public wndMain()
         {
             InitializeComponent();
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
+        /// <summary>
+        /// Check If A Invoice is In Progress, Delete if User Wishes to Cancel
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CancelInvoice(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                if (MenuEnabled == true)
+                {
+                    MessageBoxResult result =
+                    MessageBox.Show
+                        (
+                            "Invoice in Progress, Do you still wish to quit?",
+                            "Unsaved",
+                            MessageBoxButton.YesNo,
+                            MessageBoxImage.Warning
+                        );
+                    if (result == MessageBoxResult.No)
+                    { e.Cancel = true; }
+                    else
+                    {
+                        if (clsInvoicesPass.IsUpdating)
+                        { logic.ResetTable();
+                          db.ExecuteNonQuery(sqlQuery.DeleteCopy());
+                        }
+                        else {logic.DeleteAll();  }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
 /****NAV METHODS***/
-          /// <summary>
-          /// Navigating To Search Window
-          /// </summary>
-          /// <param name="sender"></param>
-          /// <param name="e"></param>
+        /// <summary>
+        /// Navigating To Search Window
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void NavToSearchWnd(object sender, RoutedEventArgs e)
         {
             try
@@ -42,9 +79,14 @@ namespace InvoiceSystem.Main
                 {
                     /*Close Main Window*/
                     this.Hide();
+                    ResetWindow();
                     wndSearch search = new wndSearch();
                     search.ShowDialog();
                     this.Show();
+                    if (clsInvoicesPass.IsUpdating)
+                    {
+                        UpdateWindow();
+                    }
 
                     /*When Search Window is Closed Gather Current ID Selected*/
                 }//End IF
@@ -77,6 +119,7 @@ namespace InvoiceSystem.Main
                 if (!MenuEnabled)
                 {
                     this.Hide();
+                    ResetWindow();
                     wndItems items = new wndItems();
                     items.ShowDialog();
                     this.Show();
@@ -99,6 +142,7 @@ namespace InvoiceSystem.Main
 /*****Create OR Update Data******/
         /// <summary>
         /// Creating A new Invoice And Enabling The Bottom Half Of the Screen
+        /// OR Updating 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -106,28 +150,43 @@ namespace InvoiceSystem.Main
         {
             try
             {
-                IsNew = true;
-                /*Clear Item Drop Box so It doesnt just keep filling it up*/
-                SelectItemDropBox.Items.Clear();
-                ItemCount = 0;
-                ContentGridLabel.Content = "Create a New Invoice";
-                CostTextBox.Text = "$0";
+                BeginButton.Content = "Create Invoice";
                 /*Enable All Items*/
                 ChangeEnableStatus();
-                /*Show Cancel Button*/
-                CancelInvoiceButton.Visibility = Visibility.Visible;
-
+                /*Clear Item Drop Box so It doesnt just keep filling it up*/
+                SelectItemDropBox.Items.Clear();
                 /*Load DropDown Menu*/
                 int iRet = 0;
 
                 //Grab All Items
-                ds = db.ExecuteSQLStatement("SELECT * FROM ItemDesc", ref iRet);
+                ds = db.ExecuteSQLStatement(sqlQuery.GrabAllFromItemDesc(), ref iRet);
 
                 //Loop and add them to Drop Down
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     SelectItemDropBox.Items.Add(ds.Tables[0].Rows[i][1].ToString());
+                } 
+                /*Show Cancel Button*/
+                CancelInvoiceButton.Visibility = Visibility.Visible;
+                if (clsInvoicesPass.IsUpdating)
+                {
+                    SaveInvoiceButton.IsEnabled = true;
+                    SetDataGridHeaders();
+                    TotalCostTextBox.IsEnabled = true;
+                    //Make A Copy Of The Table 
+                    db.ExecuteNonQuery(sqlQuery.CopyOver());
+
+                    //Grab Item Count 
+                    ItemCount = Convert.ToInt32(db.ExecuteScalarSQL(sqlQuery.GrabCountForCurrentInvoice()));
                 }
+                else {
+
+                ResetWindow();
+                ItemCount = 0;
+                ContentGridLabel.Content = "Create a New Invoice";
+                CostTextBox.Text = "$0";
+                
+                
                 /*Add a New Invoice Number to Invoice Table, Add Date*/
                 string InvoiceNumber = logic.AddInvoice();
                 /*Check if Invoice Number was Gathered Correctly*/
@@ -141,10 +200,8 @@ namespace InvoiceSystem.Main
                 {
                     /*Set labels*/
                     InvoiceNumberLabel.Content = InvoiceNumber;
-                    var TodaysDate = DateOnly.FromDateTime(DateTime.Now);
-                    DateLabel.Content = TodaysDate;
                 }
-                /*TODO::When Clicked Again, Wipe Fields*/
+                } 
             }
             catch (Exception ex)
             {
@@ -152,15 +209,22 @@ namespace InvoiceSystem.Main
             }
 
         }//End EnableMenu Button
-        /*Update Current Invoice*/
+
+        /// <summary>
+        /// Updating The Current Invoice Loaded in 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void UpdateInvoiceClick(object sender, RoutedEventArgs e)
         {
             try
             {
+                clsInvoicesPass.IsUpdating = true;
                 /*Enable All Items*/
                 ChangeEnableStatus();
                 CancelInvoiceButton.Visibility = Visibility.Visible;
                 ContentGridLabel.Content = "Update Invoice";
+                db.ExecuteNonQuery(sqlQuery.CopyOver());
 
                 /*Set MenuEnabled so User cannot change windows*/
                 MenuEnabled = true;
@@ -171,16 +235,24 @@ namespace InvoiceSystem.Main
             }
         }
 
+        /// <summary>
+        /// Adding A Item to The DataGrid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddItem(object sender, RoutedEventArgs e)
         {
+            ErrorTextBox.Visibility= Visibility.Hidden;
             try
             {
                 //Make Sure Its Not Empty 
                 if(SelectItemDropBox.Text == "" || SelectItemDropBox.Text == null)
                 {
+                    ErrorTextBox.Visibility = Visibility.Visible;
                     ErrorTextBox.Text = "Please Make Sure To Select A Item";
                 }
-                else { 
+                else {
+                SaveInvoiceButton.IsEnabled = true;
                 /*Adding Item to Datagrid*/
                 string ItemDesc;
                 string ItemPrice;
@@ -191,14 +263,11 @@ namespace InvoiceSystem.Main
                 ItemCount++;
                 string InvoiceNumber = InvoiceNumberLabel.Content.ToString();
 
-                logic.AddToLineItemsTable(ItemDesc, InvoiceNumber, ItemCount, ItemPrice);
+                logic.AddToLineItemsTable(ItemDesc, InvoiceNumber, ItemCount);
                 logic.UpdateDataGrid(AddedItemsDataGrid);
+                SetDataGridHeaders();
 
-                AddedItemsDataGrid.Columns[0].Header = "Item Number";
-                AddedItemsDataGrid.Columns[1].Header = "Item Description";
-                AddedItemsDataGrid.Columns[2].Header = "Cost";
-
-                TotalCostTextBox.Text = "$" + logic.TotalPrice.ToString();
+                    TotalCostTextBox.Text = "$" + logic.TotalPrice.ToString();
                 }
             }
             catch (Exception ex)
@@ -217,6 +286,14 @@ namespace InvoiceSystem.Main
         {
             try
             {
+                ErrorTextBox.Visibility = Visibility.Hidden;
+                if (AddedItemsDataGrid.Items.Count == 0)
+                {
+                    ErrorTextBox.Visibility = Visibility.Visible;
+                    ErrorTextBox.Text = "Please Make Sure To Add Items Or Cancel";
+                }
+                else
+                {
                 /*Disable Menu Until User Decides to Update*/
                 ChangeEnableStatus();
                 /*Allow User to Press Update*/
@@ -224,6 +301,17 @@ namespace InvoiceSystem.Main
                 CancelInvoiceButton.Visibility = Visibility.Hidden;
 
                 logic.UpdateTotalPrice(InvoiceNumberLabel.Content.ToString());
+                    DateTime SelectedDate = UserDatePicker.SelectedDate.Value.Date;
+                    logic.UpdateDate(UserDatePicker.SelectedDate.Value.Date);
+                    if (clsInvoicesPass.IsUpdating)
+                    {
+                        db.ExecuteNonQuery(sqlQuery.DeleteCopy());
+                        clsInvoicesPass.IsUpdating = false;
+                    }
+                }
+                //Hide Buttons
+                CancelInvoiceButton.Visibility = Visibility.Hidden;
+                UpdateInvoiceButton.Visibility = Visibility.Hidden;
             }
             catch (Exception ex)
             {
@@ -231,10 +319,16 @@ namespace InvoiceSystem.Main
             }
         }
 
+        /// <summary>
+        /// Deleting A Item off The DataGrid
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteItemClick(object sender, RoutedEventArgs e)
         {
             try
             {
+                ErrorTextBox.Visibility = Visibility.Hidden;
                 //Check That User Has A Item Selected 
                 if (AddedItemsDataGrid.SelectedItem != null)
                 {
@@ -242,6 +336,7 @@ namespace InvoiceSystem.Main
                     //Delete Item
                     logic.DeleteItemOffList(index);
                     logic.UpdateDataGrid(AddedItemsDataGrid);
+                    SetDataGridHeaders();
                 }
                 else
                 {
@@ -254,31 +349,32 @@ namespace InvoiceSystem.Main
             }
         }
 
+        /// <summary>
+        /// Canceling The Current Invoice
+        /// For New it Deletes The Invoice All Together 
+        /// For Updated, It Just Restores Previous Table
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CancelCurrentButton(object sender, RoutedEventArgs e)
         {
             try
             {
+                ErrorTextBox.Visibility = Visibility.Hidden;
                 ChangeEnableStatus();
+                if (clsInvoicesPass.IsUpdating)
+                {
+                    logic.ResetTable();
+                    db.ExecuteNonQuery(sqlQuery.DeleteCopy());
+                }
+                else
+                {
+                    logic.DeleteAll();
+                }
+                //Hide Buttons
                 CancelInvoiceButton.Visibility = Visibility.Hidden;
-
-                ErrorTextBox.Text = "Canceled A New Set";
-                logic.DeleteAll();
-                AddedItemsDataGrid.DataContext = null;
-                logic.UpdateDataGrid(AddedItemsDataGrid);
-
-                AddedItemsDataGrid.Columns[0].Header = "Item Number";
-                AddedItemsDataGrid.Columns[1].Header = "Item Description";
-                AddedItemsDataGrid.Columns[2].Header = "Cost";
-
-                TotalCostTextBox.Text = "$" + logic.TotalPrice.ToString();
-
-                InvoiceNumberLabel.Content = "";
-                DateLabel.Content = "";
-
-                SelectItemDropBox.Items.Clear();
-                CostTextBox.Text = "$0";
-
-
+                UpdateInvoiceButton.Visibility = Visibility.Hidden;
+                ResetWindow();
             }
             catch (Exception ex)
             {
@@ -287,25 +383,32 @@ namespace InvoiceSystem.Main
         }
 
 /****EXTRA METHODS*****/
+        /// <summary>
+        ///Changing The Status to Either Enabled or Disable Stuff
+        /// </summary>
         public void ChangeEnableStatus()
         {
             try
             {
                 MenuEnabled = !MenuEnabled;
                 CreateOrEditContentGrid.IsEnabled = !CreateOrEditContentGrid.IsEnabled;
-                AddedItemsDataGrid.IsEnabled = !AddedItemsDataGrid.IsEnabled;
-                SaveInvoiceButton.IsEnabled = !SaveInvoiceButton.IsEnabled;
-                DeleteItemButton.IsEnabled = !DeleteItemButton.IsEnabled;
                 TotalCostTextBox.IsEnabled = !TotalCostTextBox.IsEnabled;
+                DeleteItemButton.IsEnabled = !DeleteItemButton.IsEnabled;
                 BeginButton.IsEnabled = !BeginButton.IsEnabled;
                 UpdateInvoiceButton.IsEnabled = !UpdateInvoiceButton.IsEnabled;
+                UserDatePicker.IsEnabled = !UserDatePicker.IsEnabled;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-        /*See What Item is Selected and Update Price*/
+        /// <summary>
+        /// When A Item From the Drop Box is Selected 
+        /// Set The Current Price 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemSelected(object sender, EventArgs e)
         {
             try
@@ -323,12 +426,78 @@ namespace InvoiceSystem.Main
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-        
-        public void UpdateWindow(string InvoiceNum)
+        /// <summary>
+        /// Gathers The Data From The Given Invoice Number
+        /// </summary>
+        public void UpdateWindow()
         {
-            logic.UpdateCurrentInvoice(InvoiceNum);
-            logic.UpdateDataGrid(AddedItemsDataGrid);
+            try {
+                int IRef = 0;
+                string SelectedInvoice = clsInvoicesPass.sSelectedInvoiceNum.ToString();
+                UserDatePicker.Text = db.ExecuteScalarSQL(sqlQuery.GrabDateForCurrentInvoice());
+                logic.UpdateCurrentInvoice(SelectedInvoice);
+                BeginButton.Content = "Update";
+                logic.UpdateDataGrid(AddedItemsDataGrid);
+                InvoiceNumberLabel.Content = clsInvoicesPass.sSelectedInvoiceNum.ToString();
+                TotalCostTextBox.IsEnabled = true;
+                SetDataGridHeaders();
+                TotalCostTextBox.Text = "$" + logic.TotalPrice.ToString();
+                clsInvoicesPass.OldTotal = logic.TotalPrice;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
-        
+        /// <summary>
+        /// Makes Menu Neutral Again
+        /// </summary>
+       public void ResetWindow()
+        {
+            try
+            {
+                //Certain Values Dont Need to be Reset when Updates Happen
+                if(ResetAll)
+                {
+                    clsInvoicesPass.IsUpdating = false;
+                    InvoiceNumberLabel.Content = "";
+                    AddedItemsDataGrid.ItemsSource = null;
+                }
+                SaveInvoiceButton.IsEnabled = false;
+                logic.TotalPrice = 0;
+                TotalCostTextBox.Text = "$" + logic.TotalPrice.ToString();
+                UserDatePicker.DisplayDate = DateTime.Now;
+                if (InvoiceNumberLabel.Content.ToString() != "") 
+                    {
+                        //Refresh The Data Grid
+                        AddedItemsDataGrid.ItemsSource = null;
+                        //Set All Boxes To Null
+                        SelectItemDropBox.Items.Clear();
+                        CostTextBox.Text = "$0";
+                    }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+        /// <summary>
+        /// Set Headers For dataGrid so they Arent Default Values 
+        /// </summary>
+        public void SetDataGridHeaders()
+        {
+            try
+            {
+            AddedItemsDataGrid.Columns[0].Header = "Item Number";
+            AddedItemsDataGrid.Columns[1].Header = "Item Description";
+            AddedItemsDataGrid.Columns[2].Header = "Cost";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
+        }
+
     }
 }

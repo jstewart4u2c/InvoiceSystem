@@ -1,5 +1,6 @@
 ﻿using InvoiceSystem.Common;
 using InvoiceSystem.Items;
+using InvoiceSystem.Main;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -134,9 +135,10 @@ namespace InvoiceSystem.Search
                 string sNumID = selectedItem.sInvoiceNum;
 
                 clsInvoicesPass.sSelectedInvoiceNum = sNumID;
-
-                Main.wndMain main = new Main.wndMain();
-                this.Close();
+                clsInvoicesPass.IsUpdating = true;
+                
+                this.Hide();
+                
             }
         }
 

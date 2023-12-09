@@ -1,4 +1,6 @@
-﻿namespace InvoiceSystem.Common
+﻿using Microsoft.VisualBasic;
+
+namespace InvoiceSystem.Common
 {
     /// <summary>
     /// gets/sets invoice objects
@@ -18,5 +20,11 @@
     public static class clsInvoicesPass
     {
         public static string sSelectedInvoiceNum { get; set; }
+
+        public static bool IsUpdating { get; set; }
+
+        public static int OldTotal {  get; set; }
+
+        public static DateAndTime OldDate { get; set; }
     }
 }

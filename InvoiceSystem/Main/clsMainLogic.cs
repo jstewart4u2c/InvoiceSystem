@@ -14,7 +14,6 @@ namespace InvoiceSystem.Main
         clsMainSQL sqlQuery = new clsMainSQL();
         clsDataAccess db = new clsDataAccess();
         DataSet ds;
-        clsInvoices invoices = new clsInvoices();
         int count;
         public int TotalPrice;
         string CurrentInvoice;
@@ -54,7 +53,7 @@ namespace InvoiceSystem.Main
         /// <param name="InvoiceNumber"></param>
         /// <param name="ItemCount"></param>
         /// <param name="ItemPrice"></param>
-        public void AddToLineItemsTable(string ItemDesc, string InvoiceNumber, int ItemCount, string ItemPrice)
+        public void AddToLineItemsTable(string ItemDesc, string InvoiceNumber, int ItemCount)
         {
             try
             {
@@ -66,7 +65,6 @@ namespace InvoiceSystem.Main
                 string ItemCode = db.ExecuteScalarSQL(sqlQuery.GrabItemCode(ItemDesc));
                 newRow[0] = InvoiceNumber;
                 newRow[1] = ItemCount;
-
                 newRow[2] = ItemCode;
 
                 ds.Tables[0].Rows.Add(newRow);
@@ -99,6 +97,18 @@ namespace InvoiceSystem.Main
             }
         }
 
+        public void UpdateDate(DateTime SelectedDate)
+        {
+            try
+            {
+                db.ExecuteScalarSQL(sqlQuery.UpdateInvoiceDate(CurrentInvoice, SelectedDate));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
         /// <summary>
         /// Updating The DataGrid To Match The Current Correct Data
         /// </summary>
@@ -117,10 +127,8 @@ namespace InvoiceSystem.Main
                 //if the data is not null, add all to dataGrid
                 if (ds != null)
                 {
-
                     foreach (DataRow dr in ds.Tables[0].Rows)
                     {
-
                         clsCurrentOrder itemInfo = new clsCurrentOrder();
 
                         itemInfo.sCount = dr[0].ToString();
@@ -168,18 +176,49 @@ namespace InvoiceSystem.Main
                 MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
+        /// <summary>
+        /// Delete The Invoice And LineItems Of The Canceled New Invoice
+        /// </summary>
         public void DeleteAll()
         {
+            try
+            {
             db.ExecuteNonQuery(sqlQuery.DeleteNewAddOnToLineItems(CurrentInvoice));
             db.ExecuteNonQuery(sqlQuery.DeleteNewAddOnToInvoice(CurrentInvoice));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+
         }
 
 //*****METHODS THAT TALK TO SEARCH WINDOW******/
+        /// <summary>
+        /// Just Updating Invoice To Use For Future
+        /// </summary>
+        /// <param name="InvoiceNum"></param>
         public void UpdateCurrentInvoice(string InvoiceNum)
         {
-            CurrentInvoice = InvoiceNum;
-            
+            try { CurrentInvoice = InvoiceNum;}
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+        /// <summary>
+        /// Resets the LineItem Table To Its Prev State if Update is Canceled
+        /// </summary>
+        public void ResetTable()
+        {
+            try {
+            db.ExecuteNonQuery(sqlQuery.ResetOGTable());
+            db.ExecuteNonQuery(sqlQuery.DeleteCopy());
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine(ex.Message);
+            }
         }
     }
 }
