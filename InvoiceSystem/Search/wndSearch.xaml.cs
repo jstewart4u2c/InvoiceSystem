@@ -29,7 +29,7 @@ namespace InvoiceSystem.Search
         bool bCost = false;
         bool bNum = false;
         bool bDate = false;
-        bool bClear = true;
+        bool bClear = false;
         bool SelectedID = false;
         List<string> lsNum = new List<string>();
         List<string> lsDate = new List<string>();
@@ -104,10 +104,18 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void SearchInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bDate = true;
 
-            LoadData();
+            try
+            {
+                bDate = true;
+                LoadData();
 
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
 
         }
 
@@ -116,11 +124,19 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void SearchTotalCosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            bCost = true;
 
-            LoadData();
+            try
+            {
+                bCost = true;
+
+                LoadData();
 
 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
