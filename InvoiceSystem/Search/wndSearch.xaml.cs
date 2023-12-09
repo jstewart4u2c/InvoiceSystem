@@ -82,7 +82,7 @@ namespace InvoiceSystem.Search
         }
 
         /// <summary>
-        /// find the invoice number in database and updates grid
+        ///  set bool to true
         /// </summary>
         private void SearchInvoiceNumber_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -100,7 +100,7 @@ namespace InvoiceSystem.Search
         }
 
         /// <summary>
-        /// find the date in database and updates grid
+        /// set bool to true
         /// </summary>
         private void SearchInvoiceDate_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -120,7 +120,7 @@ namespace InvoiceSystem.Search
         }
 
         /// <summary>
-        /// find the total cost in database and updates grid
+        ///  set bool to true
         /// </summary>
         private void SearchTotalCosts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -140,7 +140,7 @@ namespace InvoiceSystem.Search
         }
 
         /// <summary>
-        /// close then open main and send invoice ID
+        /// Close then open main and send invoice ID
         /// </summary>
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
@@ -163,9 +163,10 @@ namespace InvoiceSystem.Search
         /// </summary>
         private void LoadData()
         {
+            //See if clear is false
             if (!bClear)
             {
-
+                //Set grid data
                 if (bNum)
                 {
                     SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceNumbers(SearchInvoiceNumber.SelectedItem.ToString());
@@ -195,6 +196,7 @@ namespace InvoiceSystem.Search
                 {
                     SearchInvoice.ItemsSource = SearchLogic.FilterInvoiceDates(SearchInvoiceDate.SelectedItem.ToString());
                 }
+                //Set combo boxes using string arrays
                 var invoiceNumbers = new List<string>();
                 var invoiceDates = new List<string>();
                 var totalCosts = new List<string>();
@@ -218,7 +220,7 @@ namespace InvoiceSystem.Search
 
         private void btClearGrid_Click(object sender, RoutedEventArgs e)
         {
-
+            // Reset the gid and combo boxes.
             bClear = true;
             SearchLogic = new clsSearchLogic();
             SearchInvoiceNumber.SelectedItem = null;
