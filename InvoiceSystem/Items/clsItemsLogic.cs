@@ -88,7 +88,7 @@ namespace InvoiceSystem.Items
                 //If adding, selected index is -1
                 if (dataGrid.SelectedIndex == -1)
                 {
-                    DataRow newRow = ds.Tables[0].NewRow();
+                    DataRow newRow = ds.Tables[0].NewRow();       
 
                     newRow[0] = Convert.ToString(++count);
 
@@ -108,7 +108,7 @@ namespace InvoiceSystem.Items
                     string itemCode = ds.Tables[0].Rows[dataGrid.SelectedIndex][0].ToString();
 
 
-                    db.ExecuteNonQuery(itemSQL.UpdateItem(count, newDesc, newCost));
+                    db.ExecuteNonQuery(itemSQL.UpdateItem(itemCode, newDesc, newCost));
                 }
 
                 ds.AcceptChanges();

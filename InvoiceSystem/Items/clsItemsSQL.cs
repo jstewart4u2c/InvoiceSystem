@@ -53,7 +53,7 @@ public class clsItemsSQL
     /// <param name="newCost"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public string UpdateItem(int itemCode, string newDesc, string newCost)
+    public string UpdateItem(string itemCode, string newDesc, string newCost)
     {
         try
         {
